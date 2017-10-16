@@ -1,0 +1,10 @@
+.addWine{
+	padding-top: 27px;
+	color: green;
+	cursor: pointer;
+}
+
+.removeWine{
+	color: red;
+	cursor: pointer;
+}
