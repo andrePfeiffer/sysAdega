@@ -93,13 +93,11 @@
 	
 	$(document).on('click', '.addWine', function() {
 		  $("#vinhos").append("<div class='row' id='"+ idVinho +"'>"+							
-			"<div class='col-md-5'>"+
-    		"<label for='vinho'>Vinho</label>"+		
-			"<select class='form-control' id='vinho' name='vinho' required>"+
+			"<div class='col-md-5'>"+	
+			"<br><select class='form-control' id='vinho' name='vinho' required>"+
 			<% out.print('"'+ selectVinhos + '"'); %> + 
-			"</select></div><div class='col-md-2'>"+	
-  			"<label for='qtdVinho'>Quantidade</label>"+		
-			"<input type='number' min='0' class='form-control' id='qtdVinho' name='qtdVinho' required/>"+
+			"</select></div><div class='col-md-2'>"+		
+			"<br><input type='number' min='0' class='form-control' id='qtdVinho' name='qtdVinho' required/>"+
 			"</div><div class='col-md-5'>"+
   			"<span><i class='fa fa-plus fa-2x addWine' aria-hidden='true' onclick='addWineLine()'></i></span>&nbsp;&nbsp;&nbsp;"+
   			"<span><i class='fa fa-trash fa-2x removeWine' aria-hidden='true' onclick='removeWineLine("+idVinho+")'></i></span>&nbsp;"+
