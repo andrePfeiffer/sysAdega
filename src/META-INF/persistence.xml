@@ -17,8 +17,8 @@
 			<!--dados da conexao -->
 			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
 <!-- 	      	<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:adega.db" /> -->
-			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:D:/GoogleDrive_luis.jr.galaxy/Academicos_Analise_de_Sistemas/APS_PUC/RTP/arquivos_11102017/adega.db3" />	      	
-	      	
+			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:D:/GoogleDrive_luis.jr.galaxy/Academicos_Analise_de_Sistemas/APS_PUC/RTP/arquivos_11102017/adega.db3" /> 	      	
+<!-- 	      		<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:${basedir}/adega.db3" />  -->
 	      	<property name="javax.persistence.jdbc.user" value="" />
 	      	<property name="javax.persistence.jdbc.password" value="" />
 
