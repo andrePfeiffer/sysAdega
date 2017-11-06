@@ -13,6 +13,7 @@ public class VinhoDAO extends CommonsDAO {
 	public boolean apagar(int identificador) {
 		EntityManagerFactory factory = HibernateUtil.getEntityManagerFactory();
 		EntityManager manager = factory.createEntityManager();
+		
 		Vinho resultado = manager.find(Vinho.class, identificador);
 		try {
 			manager.getTransaction().begin();
@@ -28,12 +29,17 @@ public class VinhoDAO extends CommonsDAO {
 
 	@Override
 	public List<Vinho> selecionarTodos() {
+		List<?> resultadoObj = new ArrayList<>();
 		List<Vinho> resultado = new ArrayList<Vinho>();
 		EntityManagerFactory factory = HibernateUtil.getEntityManagerFactory();
 		EntityManager manager = factory.createEntityManager();		
 	    Query query = manager.createQuery("from Vinho v order by idVinho");
-	    resultado = query.getResultList();
+	    resultadoObj = query.getResultList();
 	    manager.close();
+	    
+	    for (Object vinho : resultadoObj) {
+			if(vinho instanceof Vinho) resultado.add((Vinho) vinho);
+		}
 		return resultado;
 	}
 

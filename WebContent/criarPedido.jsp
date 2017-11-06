@@ -1,5 +1,5 @@
 <%@include file="_import.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<%@include file="_header.jsp"%>
@@ -41,7 +41,7 @@
 				<!-- TODO: substituir o campo nomeCliente por uma combobox que traga os nomes dos clientes cadastrados -->					
 					<div class="form-group">	
 		        		<label for="nomeCliente">Cliente</label>					
-						<input type="text" class="form-control" id="nomeCliente" name="nomeCliente" maxlength="150" required"/>						
+						<input type="text" class="form-control" id="nomeCliente" name="nomeCliente" maxlength="150" required/>						
 					</div>
 									
 				
@@ -65,7 +65,7 @@
 					  		</div>
 					  		<div class="col-md-2">	
 					  			<label for="qtdVinho">Quantidade</label>		
-								<input type="number" min="0" class="form-control" id="qtdVinho" name="qtdVinho" required"/>
+								<input type="number" min="0" class="form-control" id="qtdVinho" name="qtdVinho" required/>
 							</div>		
 							<div class="col-md-5">
 					  			<span><i class="fa fa-plus fa-2x addWine" aria-hidden="true"></i></span>&nbsp;&nbsp;&nbsp;

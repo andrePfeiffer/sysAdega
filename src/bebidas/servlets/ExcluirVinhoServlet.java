@@ -13,7 +13,8 @@ import bebidas.model.VinhoManager;
 
 @WebServlet("/ExcluirVinho.do")
 public class ExcluirVinhoServlet extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// Vinho a excluir
 		int idVinho = Integer.parseInt(request.getParameter("idVinho"));

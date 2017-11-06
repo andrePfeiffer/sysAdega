@@ -13,7 +13,8 @@ import bebidas.model.VinhoManager;
 
 @WebServlet("/PopularBd.do")
 public class PopularBdServlet extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		VinhoManager.popularBD();
 		RequestDispatcher view = request.getRequestDispatcher("gerenciarVinhos.jsp");

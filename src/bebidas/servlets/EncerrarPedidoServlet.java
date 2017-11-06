@@ -14,6 +14,8 @@ import bebidas.model.PedidoManager;
 
 @WebServlet("/EncerraPedido.do")
 public class EncerrarPedidoServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int idPedido = Integer.parseInt(request.getParameter("idPedido"));	

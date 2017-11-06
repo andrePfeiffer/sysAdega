@@ -14,6 +14,8 @@ import bebidas.model.PedidoManager;
 
 @WebServlet("/CriaPedido.do")
 public class CriarPedidoServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int idVinho = Integer.parseInt(request.getParameter("vinho")); // campo obrigatório		

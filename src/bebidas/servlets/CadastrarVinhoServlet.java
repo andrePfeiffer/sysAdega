@@ -15,6 +15,8 @@ import utils.Utils;
 
 @WebServlet("/CadastraNovoVinho.do")
 public class CadastrarVinhoServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String nomeVinho = request.getParameter("nomeVinho").trim(); // campo obrigatório		
