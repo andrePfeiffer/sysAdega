@@ -1,5 +1,5 @@
 <%@include file="_import.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<%@include file="_header.jsp"%>
@@ -9,15 +9,15 @@
 	
 	<%			
 		// Lista de vinhos
-		List<Pedido> pedidos = (List<Pedido>)request.getAttribute("listaPedidos");
-		String estadoPedido = (String)request.getAttribute("estadoPedido");
+		List<?> pedidos = (List<?>)request.getAttribute("listaPedidos");
+		String estadoPedido = (String) request.getAttribute("estadoPedido");
 		
 		if( pedidos == null || pedidos.isEmpty() ) {
 	%>	
 		<div class="container"> 
 			<div class="alert alert-danger">		
 				<strong>Não há pedidos no estado <i><%=estadoPedido%></i>.</strong>
-				<br></br><a href="consultarPedidoPorEstado.jsp" class="btn btn-success">Nova consulta</a>
+				<br/><a href="consultarPedidoPorEstado.jsp" class="btn btn-success">Nova consulta</a>
 			</div>
 		</div>		
 	<%
@@ -31,7 +31,7 @@
 	<div class="container">		
 		<!-- Botões -->	
 		<a href="consultarPedidoPorEstado.jsp" class="btn btn-success">Nova consulta</a>
-		<br><br/>
+		<br/>
 		
 		<div class="row">
 	        <div class="panel panel-primary filterable">
@@ -44,16 +44,17 @@
 	            <table class="table">
 	                <thead>
 	                    <tr class="filters">
-	                        <th><input type="text" class="form-control" placeholder="Cliente" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Vinho" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Qtd Pedida" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Valor total" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Dt Pedido" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Dt Encerramento" disabled></th>
+	                        <th><input type="text" class="form-control" placeholder="Cliente" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Vinho" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Qtd Pedida" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Valor total" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Dt Pedido" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Dt Encerramento" disabled /></th>
 	                        <th></th>
 	                    </tr>
 	                </thead>
-	                <% for( Pedido pedido : pedidos ) { %>
+	                <% for( Object pedidoObj : pedidos ) {%>
+	                <% Pedido pedido = (Pedido) pedidoObj; %>
 				      <tr>
 				      	<td><%=pedido.getNomeCliente()%></td>
 				      	<td><%=pedido.getVinho().getNomeVinho()%></td>

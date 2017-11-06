@@ -16,6 +16,8 @@ import bebidas.model.PedidoManager;
 
 @WebServlet("/ConsultaPedidoPorEstado.do")
 public class ConsultarPedidoPorEstadoServlet extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		String estadoPedido = request.getParameter("estadoPedido"); // campo obrigatório		

@@ -1,5 +1,5 @@
 <%@include file="_import.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<%@include file="_header.jsp"%>
@@ -16,7 +16,7 @@
 		<div class="container"> 
 			<div class="alert alert-danger">		
 				<strong>Não há vinhos cadastrados.</strong>
-				<br></br><a href="cadastrarVinho.jsp" class="btn btn-success">Cadastrar Novo</a>
+				<br/><a href="cadastrarVinho.jsp" class="btn btn-success">Cadastrar Novo</a>
 				<a href="confirmacao.jsp?operacao=popularBD" class="btn btn-success">Popular Banco de Dados</a>
 			</div>
 		</div>		
@@ -32,7 +32,7 @@
 		<!-- Botões -->	
 		<a href="cadastrarVinho.jsp" class="btn btn-success">Cadastrar Novo</a>
 		<a href="confirmacao.jsp?operacao=limparBD" class="btn btn-success">Limpar Banco de Dados</a>
-		<br><br/>
+		<br/>
 		
 		<div class="row">
 	        <div class="panel panel-primary filterable">
@@ -46,12 +46,12 @@
 	                <thead>
 	                    <tr class="filters">
 	                        <th width="5%"></th>
-	                        <th width="5%"><input type="text" class="form-control" placeholder="Id" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Nome" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Cor" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Ano" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Preço" disabled></th>
-	                        <th><input type="text" class="form-control" placeholder="Qtd Estoque" disabled></th>
+	                        <th width="5%"><input type="text" class="form-control" placeholder="Id" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Nome" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Cor" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Ano" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Preço" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Qtd Estoque" disabled /></th>
 	                    </tr>
 	                </thead>
 	                <% for( Vinho vinho : vinhos ) { %>

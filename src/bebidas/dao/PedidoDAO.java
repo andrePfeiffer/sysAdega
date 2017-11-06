@@ -28,12 +28,17 @@ public class PedidoDAO extends CommonsDAO {
 
 	@Override
 	public List<Pedido> selecionarTodos() {
+		List<?> resultadoObj = new ArrayList<>();
 		List<Pedido> resultado = new ArrayList<Pedido>();
 		EntityManagerFactory factory = HibernateUtil.getEntityManagerFactory();
 		EntityManager manager = factory.createEntityManager();		
 	    Query query = manager.createQuery("from Pedido p order by idPedido");
-	    resultado = query.getResultList();
+	    resultadoObj = query.getResultList();
 	    manager.close();
+	    
+	    for (Object pedido : resultadoObj) {
+			if(pedido instanceof Pedido) resultado.add((Pedido) pedido);
+		}
 		return resultado;
 	}
 
@@ -57,10 +62,16 @@ public class PedidoDAO extends CommonsDAO {
 		EntityManager manager = factory.createEntityManager();
 		Query query = manager.createQuery("select p from Pedido p where p.estadoPedido = :estadoPedido");
 		query.setParameter("estadoPedido", estadoPedido);
-		if( query.getResultList() != null && !query.getResultList().isEmpty()  ) {
-			List<Pedido> resultado = (List<Pedido>)query.getResultList();
+		if( query.getResultList() != null && !query.getResultList().isEmpty() ) {
+			List<?> resultado = (List<?>) query.getResultList();
+			List<Pedido> resultadoPedido = new ArrayList<Pedido>();
+			for (Object resultadoObject : resultado) {
+				if(resultadoObject instanceof Pedido && resultadoObject != null) {
+					resultadoPedido.add((Pedido)resultadoObject);
+				}
+			}
 			manager.close();
-			return resultado;
+			return resultadoPedido;
 		} 
 		manager.close();
 		return null;

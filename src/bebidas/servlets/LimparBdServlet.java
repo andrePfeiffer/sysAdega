@@ -13,7 +13,8 @@ import bebidas.model.VinhoManager;
 
 @WebServlet("/LimparBd.do")
 public class LimparBdServlet extends HttpServlet {
-	
+	private static final long serialVersionUID = 1L;
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		VinhoManager.limparBD();
 		RequestDispatcher view = request.getRequestDispatcher("gerenciarVinhos.jsp");

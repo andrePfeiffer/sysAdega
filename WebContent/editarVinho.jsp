@@ -1,5 +1,5 @@
 <%@include file="_import.jsp"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<%@include file="_header.jsp"%>
@@ -31,7 +31,7 @@
 		<form action="EditaVinho.do" method="post">
 			<fieldset>
 				<legend>Edição de Vinho</legend>
-				<input type="hidden" name=idVinho value="<%=vinhoEd.getIdVinho()%>">
+				<input type="hidden" name="idVinho" value="<%=vinhoEd.getIdVinho()%>"/>
 
 					<div class="form-group">	
 		        		<label for="nomeVinho">Nome</label>					
