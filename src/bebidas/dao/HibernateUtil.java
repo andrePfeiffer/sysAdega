@@ -6,8 +6,6 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-import java.io.File;
-
 public class HibernateUtil {
 
     public static EntityManagerFactory singleton;

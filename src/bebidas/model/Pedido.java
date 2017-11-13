@@ -10,12 +10,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-//import bebidas.state.PedidoAberto;
-//import bebidas.state.PedidoEncerrado;
-//import bebidas.state.State;
+import bebidas.state.PedidoAberto;
+import bebidas.state.PedidoEncerrado;
+import bebidas.state.State;
 
 @Entity
 @Table(name="Pedido")
@@ -49,6 +50,18 @@ public class Pedido {
 	
 	@Column(name = "estadoPedido")
 	private String estadoPedido;
+	
+	@Transient
+	private String estadoAtualDoPedido;
+	
+	@Transient
+	private State estadoAtual;
+	
+	@Transient
+	private State pedidoAberto = new PedidoAberto();
+	
+	@Transient
+	private State pedidoEncerrado = new PedidoEncerrado();
 	
 	public int getIdPedido() {
 		return idPedido;
@@ -105,29 +118,29 @@ public class Pedido {
 	public void setValorTotal(double valorTotal) {
 		this.valorTotal = valorTotal;
 	}
+	
+	public State getEstadoAtual() {
+		return estadoAtual;
+	}
+
+	public void setEstadoAtual(State estadoAtual) {
+		this.estadoAtual = estadoAtual;
+	}
+
+	public State getPedidoAberto() {
+		return pedidoAberto;
+	}
+
+	public State getPedidoEncerrado() {
+		return pedidoEncerrado;
+	}
 
 	public String getEstadoPedido() {
 		return estadoPedido;
 	}
 
-	public void setEstadoPedido(String estadoPedido) {
-		this.estadoPedido = estadoPedido;
-	}	
-	
-//	public State getEstadoAtual() {
-//		return estadoAtual;
-//	}
-//
-//	public void setEstadoAtual(State estadoAtual) {
-//		this.estadoAtual = estadoAtual;
-//	}
-//
-//	public State getPedidoAberto() {
-//		return pedidoAberto;
-//	}
-//
-//	public State getPedidoEncerrado() {
-//		return pedidoEncerrado;
-//	}	
-	
+	public String getEstadoAtualDoPedido() {
+		return estadoAtual.estadoPedido();
+	}
+
 }

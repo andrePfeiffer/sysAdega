@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import bebidas.model.ClienteManager;
-import bebidas.model.VinhoManager;
-import utils.Utils;
 
 
 @WebServlet("/CadastraNovoCliente.do")

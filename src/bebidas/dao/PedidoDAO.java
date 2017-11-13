@@ -9,6 +9,26 @@ import javax.persistence.Query;
 import bebidas.model.Pedido;
 
 public class PedidoDAO extends CommonsDAO {
+	
+	public Pedido setEstado(Object pedidoObj) {
+		Pedido pedido = null;
+		
+		if(pedidoObj instanceof Pedido) {
+			pedido = (Pedido) pedidoObj;
+			
+			String estadoPedido = pedido.getEstadoPedido();
+			switch (estadoPedido) {
+			case "Aberto":
+				pedido.setEstadoAtual(pedido.getPedidoAberto());
+				break;
+			case "Encerrado":
+				pedido.setEstadoAtual(pedido.getPedidoEncerrado());
+				break;
+			}
+		}
+		
+		return pedido;
+	}
 
 	public boolean apagar(int identificador) {
 		EntityManagerFactory factory = HibernateUtil.getEntityManagerFactory();
@@ -28,16 +48,17 @@ public class PedidoDAO extends CommonsDAO {
 
 	@Override
 	public List<Pedido> selecionarTodos() {
-		List<?> resultadoObj = new ArrayList<>();
+		List<?> resultadoObjList = new ArrayList<>();
 		List<Pedido> resultado = new ArrayList<Pedido>();
 		EntityManagerFactory factory = HibernateUtil.getEntityManagerFactory();
 		EntityManager manager = factory.createEntityManager();		
 	    Query query = manager.createQuery("from Pedido p order by idPedido");
-	    resultadoObj = query.getResultList();
+	    resultadoObjList = query.getResultList();
 	    manager.close();
 	    
-	    for (Object pedido : resultadoObj) {
-			if(pedido instanceof Pedido) resultado.add((Pedido) pedido);
+	    for (Object pedido : resultadoObjList) {
+			Pedido pedidoCast = setEstado(pedido);
+			resultado.add((Pedido) pedidoCast);
 		}
 		return resultado;
 	}
@@ -50,8 +71,9 @@ public class PedidoDAO extends CommonsDAO {
 		query.setParameter("idPedido", idPedido);
 		if( query.getResultList() != null && !query.getResultList().isEmpty()  ) {
 			Pedido resultado = (Pedido)query.getResultList().get(0);
+			Pedido pedidoCast = setEstado(resultado);
 			manager.close();
-			return resultado;
+			return pedidoCast;
 		} 
 		manager.close();
 		return null;
@@ -63,15 +85,14 @@ public class PedidoDAO extends CommonsDAO {
 		Query query = manager.createQuery("select p from Pedido p where p.estadoPedido = :estadoPedido");
 		query.setParameter("estadoPedido", estadoPedido);
 		if( query.getResultList() != null && !query.getResultList().isEmpty() ) {
-			List<?> resultado = (List<?>) query.getResultList();
-			List<Pedido> resultadoPedido = new ArrayList<Pedido>();
-			for (Object resultadoObject : resultado) {
-				if(resultadoObject instanceof Pedido && resultadoObject != null) {
-					resultadoPedido.add((Pedido)resultadoObject);
-				}
+			List<?> resultadoObjList = (List<?>) query.getResultList();
+			List<Pedido> resultado = new ArrayList<Pedido>();
+			for (Object pedido : resultadoObjList) {
+				Pedido pedidoCast = setEstado(pedido);
+				resultado.add(pedidoCast);
 			}
 			manager.close();
-			return resultadoPedido;
+			return resultado;
 		} 
 		manager.close();
 		return null;
