@@ -11,12 +11,13 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<!--entidades mapeadas -->
 		<class>bebidas.model.Vinho</class>	
-		<class>bebidas.model.Pedido</class>		
+		<class>bebidas.model.Pedido</class>
+		<class>bebidas.model.Cliente</class>		
 				
 		<properties>
 			<!--dados da conexao -->
 			<property name="javax.persistence.jdbc.driver" value="org.sqlite.JDBC" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:sqlite:<PATH>/adega.db3" /> 	      	
+		    <property name="javax.persistence.jdbc.url" value="jdbc:sqlite:c:/adega.db3" /> 	 	      	
 	      	<property name="javax.persistence.jdbc.user" value="" />
 	      	<property name="javax.persistence.jdbc.password" value="" />
 
