@@ -11,8 +11,10 @@
 		// TODO: Caso tenha ocorrido erro na criação do pedido, recuperar os valores para que o formulário já venha preenchido
 	
 		List<Vinho> vinhos = VinhoManager.consultarTodosVinhos();
+		List<Cliente> clientes = ClienteManager.consultarTodosClientes();
 		
 		String selectVinhos = "";
+		String selectClientes = "";
 	
 		if( vinhos == null || vinhos.isEmpty() ) {
 	%>	
@@ -22,7 +24,17 @@
 			</div>
 		</div>		
 	<%
-		} else {
+		} 
+		else if( clientes == null || clientes.isEmpty() ) {
+			%>	
+				<div class="container"> 
+					<div class="alert alert-danger">		
+						<strong>Não há clientes cadastrados.</strong>
+					</div>
+				</div>		
+			<%
+		}
+		else {
 	%>
 
 	<!--  CONTAINER DE MENSAGENS -->
@@ -39,12 +51,24 @@
 				<legend>Novo Pedido</legend>
 				
 				<!-- TODO: substituir o campo nomeCliente por uma combobox que traga os nomes dos clientes cadastrados -->					
-					<div class="form-group">	
-		        		<label for="nomeCliente">Cliente</label>					
-						<input type="text" class="form-control" id="nomeCliente" name="nomeCliente" maxlength="150" required/>						
-					</div>
+					<div class="row">
+						<div class="col-md-5">	
+			        		<label for="nomeCliente">Cliente</label>					
+							<select class="form-control" id="vinho" name="vinho" required>
+								<% 
+								
+									for( Cliente cliente : clientes ) { 
+								
+										selectClientes += "<option value=" + cliente.getIdCliente() + " title='CPF: " + cliente.getCpf() + "'>" + cliente.getNomeCliente() + "</option>";
+								 
+									} 
 									
-				
+									out.print(selectClientes);
+								%>
+					  		</select>
+					  	</div>						
+					</div>
+					<br>			
 					<div class="form-group">
 						<div id="vinhos">
 						<div class="row">							

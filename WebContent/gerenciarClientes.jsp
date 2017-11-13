@@ -17,7 +17,6 @@
 			<div class="alert alert-danger">		
 				<strong>Não há clientes cadastrados.</strong>
 				<br/><a href="cadastrarCliente.jsp" class="btn btn-success">Cadastrar Novo</a>
-				<a href="confirmacao.jsp?operacao=popularBD" class="btn btn-success">Popular Banco de Dados</a>
 			</div>
 		</div>		
 	<%
@@ -31,7 +30,6 @@
 	<div class="container">		
 		<!-- Botões -->	
 		<a href="cadastrarCliente.jsp" class="btn btn-success">Cadastrar Novo</a>
-		<a href="confirmacao.jsp?operacao=limparBD" class="btn btn-success">Limpar Banco de Dados</a>
 		<br/>
 		
 		<div class="row">

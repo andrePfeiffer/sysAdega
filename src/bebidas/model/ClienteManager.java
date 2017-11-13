@@ -44,29 +44,39 @@ public class ClienteManager {
 		}
 	}
 	
-	public static String editarCliente( int idCliente, String nomeCliente, int anoCliente, String corCliente, double precoCliente, int qtdEstoque ) {
+	public static String editarCliente(int idCliente, String nomeCliente, String cpf, String cep, String endereco, String numero, String complemento, String bairro, String cidade, String estado, String pais ) {
 		ClienteDAO dao = new ClienteDAO();
 
 		// Verifica se todos os campos estão preenchidos
-		if( nomeCliente == null || anoCliente <= 0 || corCliente == null || precoCliente < 0 || qtdEstoque < 0 ) { 
-			String mensagem = "Não foi possível editar o vinho: Preencha todos os campos obrigatórios.";
+		if( nomeCliente == null || cpf == null || cep == null || endereco == null || numero == null || complemento == null || bairro == null || cidade == null || estado == null || pais == null) { 
+			String mensagem = "Não foi possível editar o cliente: Preencha todos os campos obrigatórios.";
 			return mensagem;
 		}
 
-		// Verifica se já existe vinho com este nome
+		// Verifica se já existe cliente com este nome
 		Cliente existente = dao.selecionarPorNome(nomeCliente);
 		if( existente != null && existente.getIdCliente() != idCliente ) {
-			String mensagem = "Não foi possível editar o vinho: Já existe outro vinho com este nome.";
+			String mensagem = "Não foi possível editar o cliente: Já existe outro cliente com este nome.";
+			return mensagem;
+		}
+		
+		if( existente != null && existente.getCpf() == cpf ) {
+			String mensagem = "Não foi possível editar o cliente: Já existe outro cliente com este cpf.";
 			return mensagem;
 		}
 
-		// Recupera o vinho a editar
+		// Recupera o cliente a editar
 		existente = (Cliente)dao.selecionarPorId(idCliente);
-//		existente.setNomeCliente(nomeCliente);
-//		existente.setAnoCliente(anoCliente);
-//		existente.setCorCliente(corCliente);
-//		existente.setPrecoCliente(precoCliente);
-//		existente.setQtdEstoque(qtdEstoque);
+		existente.setNomeCliente(nomeCliente);
+		existente.setCpf(cpf);
+		existente.setCep(cep);
+		existente.setEndereco(endereco);
+		existente.setNumero(numero);
+		existente.setComplemento(complemento);
+		existente.setBairro(bairro);
+		existente.setCidade(cidade);
+		existente.setEstado(estado);
+		existente.setPais(pais);
 		
 		try {
 			dao.atualizar(existente);
@@ -74,7 +84,7 @@ public class ClienteManager {
 			return mensagem;
 		} catch( Exception e ) {
 			e.printStackTrace();
-			String mensagem = "Não foi possível editar o vinho";
+			String mensagem = "Não foi possível editar o cliente";
 			return mensagem;
 		}
 	}
@@ -84,11 +94,11 @@ public class ClienteManager {
 		
 		try {
 			dao.apagar(idCliente);
-			String mensagem = "Cliente apagado com sucesso: ";
+			String mensagem = "Cliente apagado com sucesso!";
 			return mensagem;
 		} catch( Exception e ) {
 			e.printStackTrace();
-			String mensagem = "Não foi possível apagar o vinho: ";
+			String mensagem = "Não foi possível apagar o cliente, contate o administrador do sistema.";
 			return mensagem;
 		}
 	}
@@ -102,47 +112,38 @@ public class ClienteManager {
 
 	public static Cliente consultarClientePorId( int idCliente ) {
 		ClienteDAO dao = new ClienteDAO();
-		Cliente vinho = dao.selecionarPorId(idCliente);
-		return vinho;
+		Cliente cliente = dao.selecionarPorId(idCliente);
+		return cliente;
 	}
 
 
 	// Limpeza do BD
-
-	public static void limparBD() {
-		ClienteDAO vinhoDao = new ClienteDAO();
-		List<Cliente> vinhos = vinhoDao.selecionarTodos();
-		for (Cliente vinho : vinhos) {
-			vinhoDao.apagar(vinho.getIdCliente());
-		}		
-		System.out.println("Clientes apagados com sucesso!");
-	}
 	
-	public static void popularBD() {
-		ClienteDAO vinhoDao = new ClienteDAO();
-		
-		Cliente novo = new Cliente();
-//		novo.setNomeCliente("Santa Helena");
-//		novo.setAnoCliente(2016);
-//		novo.setCorCliente("Tinto");
-//		novo.setPrecoCliente(37.78);
-//		novo.setQtdEstoque(4);
-		vinhoDao.inserir(novo);
-		
-		novo = new Cliente();
-		novo.setNomeCliente("Santa Sara");
-//		novo.setAnoCliente(2015);
-//		novo.setCorCliente("Rose");
-//		novo.setPrecoCliente(22.78);
-//		novo.setQtdEstoque(3);
-		vinhoDao.inserir(novo);
-		
-		novo = new Cliente();
-		novo.setNomeCliente("Santa Maria");
-//		novo.setAnoCliente(2013);
-//		novo.setCorCliente("Branco");
-//		novo.setPrecoCliente(345.78);
-//		novo.setQtdEstoque(2);
-		vinhoDao.inserir(novo);
-	}
+	//Esta função está comentada, pois não será necessário implementar para clientes.
+
+//	public static void limparBD() {
+//		ClienteDAO clienteDao = new ClienteDAO();
+//		List<Cliente> clientes = clienteDao.selecionarTodos();
+//		for (Cliente cliente : clientes) {
+//			clienteDao.apagar(cliente.getIdCliente());
+//		}		
+//		System.out.println("Clientes apagados com sucesso!");
+//	}
+//	
+//	public static void popularBD() {
+//		ClienteDAO clienteDao = new ClienteDAO();
+//		
+//		Cliente novo = new Cliente();
+//		novo.setNomeCliente("João da Silva");
+//		novo.setCpf("83137546648");
+//		novo.setCep("72581-470");
+//		novo.setEndereco("Chácara Chácara");
+//		novo.setNumero("13");
+//		novo.setComplemento("A");
+//		novo.setBairro("Núcleo Rural Santa Maria");
+//		novo.setCidade("Brasília");
+//		novo.setEstado("DF");
+//		novo.setPais("Brasil");
+//		clienteDao.inserir(novo);
+//	}
 }

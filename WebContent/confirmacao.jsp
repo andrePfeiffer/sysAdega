@@ -17,7 +17,14 @@
 					<br></br>	
 					<a href="ExcluirVinho.do?idVinho=<%=request.getParameter("idVinho")%>&nomeVinho=<%=request.getParameter("nomeVinho")%>" class="btn btn-primary">Sim</a>
 					<a href="gerenciarVinhos.jsp" class="btn btn-primary">Não</a>			
-			<%	} else if( operacao.equals("popularBD")) { %>
+			<%	}
+				if( operacao.equals("excluirCliente")) { %>
+				<strong>Esta operação é irreversível e apagará o cliente da base de dados. Tem certeza que deseja prosseguir?</strong>			
+				<br></br>	
+				<a href="ExcluirCliente.do?idCliente=<%=request.getParameter("idCliente")%>&nomeCliente=<%=request.getParameter("nomeCliente")%>" class="btn btn-primary">Sim</a>
+				<a href="gerenciarClientes.jsp" class="btn btn-primary">Não</a>			
+			<%	}
+				else if( operacao.equals("popularBD")) { %>
 					<strong>Esta operação é irreversível e irá popular o BD. Tem certeza que deseja prosseguir?</strong>			
 					<br></br>	
 					<a href="PopularBd.do" class="btn btn-primary">Sim</a>
