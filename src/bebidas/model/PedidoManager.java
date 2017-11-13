@@ -17,11 +17,11 @@ public class PedidoManager {
 		
 		Pedido pedido = new Pedido();
 		pedido.setVinho(vinho);
+		pedido.setEstadoAtual(pedido.getPedidoAberto());
 		pedido.setNomeCliente(nomeCliente);
 		pedido.setQtdVinho(qtdVinho);
 		pedido.setDtPedido(new Date());
 		pedido.setValorTotal(qtdVinho * vinho.getPrecoVinho());
-		pedido.setEstadoPedido("Aberto");
 		
 		pedidoDAO.inserir(pedido);
 		
@@ -37,23 +37,25 @@ public class PedidoManager {
 		
 		Pedido pedido = pedidoDAO.selecionarPorId(idPedido);
 		
-		// Atualiza o vinho
-		Vinho vinho = pedido.getVinho();
-		int qtdFinal = vinho.getQtdEstoque()-pedido.getQtdVinho();
-		if( qtdFinal < 0 ) {
-			return "Não foi possível encerrar o pedido: Estoque insuficiente!";
+		if(pedido.getEstadoAtual() != pedido.getPedidoEncerrado()) {
+			// Atualiza o vinho
+			Vinho vinho = pedido.getVinho();
+			int qtdFinal = vinho.getQtdEstoque()-pedido.getQtdVinho();
+			if( qtdFinal < 0 ) {
+				return "Não foi possível encerrar o pedido: Estoque insuficiente!";
+			}
+			vinho.setQtdEstoque(qtdFinal);
+			vinhoDAO.atualizar(vinho);
+			
+			// Atualiza o pedido
+			pedido.setDtEncerramento(new Date());
+			pedido.setEstadoAtual(pedido.getPedidoEncerrado());
+			pedidoDAO.atualizar(pedido);
+			
+			return "Pedido encerrado com sucesso!";
 		}
-		vinho.setQtdEstoque(qtdFinal);
-		vinhoDAO.atualizar(vinho);
 		
-		// Atualiza o pedido
-		pedido.setDtEncerramento(new Date());
-		pedido.setEstadoPedido("Encerrado");		
-		pedidoDAO.atualizar(pedido);
-		
-		//TODO: fazer o tratamento de erro
-		
-		return "Pedido encerrado com sucesso";
+		return "Não foi possível encerrar o pedido: Pedido já encerrado!";
 		
 	}
 

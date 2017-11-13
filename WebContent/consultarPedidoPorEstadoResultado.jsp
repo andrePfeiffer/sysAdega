@@ -64,7 +64,7 @@
 				      	<td><%=Utils.dateParaStr(pedido.getDtEncerramento())%></td>
 				      	<td>
 				      	<%
-				      		if( pedido.getEstadoPedido().equals("Aberto")) {
+				      		if( pedido.getEstadoAtualDoPedido().equals("Aberto")) {
 				      	%>
 				      			<a href="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-warning">Encerrar</a>
 				      	<%
