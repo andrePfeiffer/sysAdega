@@ -27,8 +27,9 @@ public class Pedido {
     @GeneratedValue(generator="generator")
 	private int idPedido;
 	
-	@Column(name = "nomeCliente")
-	private String nomeCliente;
+	@JoinColumn(name = "idCliente", referencedColumnName = "idCliente", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Cliente cliente;
 	
 	@JoinColumn(name = "idVinho", referencedColumnName = "idVinho", nullable = false)
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -57,12 +58,12 @@ public class Pedido {
 		this.idPedido = idPedido;
 	}
 
-	public String getNomeCliente() {
-		return nomeCliente;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setNomeCliente(String nomeCliente) {
-		this.nomeCliente = nomeCliente;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
 
 	public Vinho getVinho() {

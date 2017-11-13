@@ -19,11 +19,11 @@ public class CriarPedidoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		int idVinho = Integer.parseInt(request.getParameter("vinho")); // campo obrigatório		
-		String nomeCliente = request.getParameter("nomeCliente").trim(); // campo obrigatório		
+		int idCliente = Integer.parseInt(request.getParameter("cliente")); // campo obrigatório		
 		int qtdVinho = Integer.parseInt(request.getParameter("qtdVinho").trim()); // campo obrigatório		
 
 		// Encaminhar para a classe especialista
-		String result = PedidoManager.criarPedido( idVinho, nomeCliente, qtdVinho);		
+		String result = PedidoManager.criarPedido( idVinho, idCliente, qtdVinho);		
 		request.setAttribute("mensagem", result);
 		RequestDispatcher view = request.getRequestDispatcher("index.jsp");
 		
