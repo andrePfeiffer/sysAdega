@@ -18,7 +18,7 @@ public class HibernateUtil {
     	
     	// persistenceMap pode ser usado para modificar o persistence.xml dinamicamente, podemos mudar o url do jdbc em runtime.
     	Map<String, String> persistenceMap = new HashMap<String, String>();
-		persistenceMap.put("javax.persistence.jdbc.url", "jdbc:sqlite:C:/Users/LUIS/workspace/VinhosWeb/adega.db3");
+		//persistenceMap.put("javax.persistence.jdbc.url", "jdbc:sqlite:C:/Users/andre/sysAdega/adega.db3");
 
 		//TODO(imagal): Verificar se é possível conseguir o Path do projeto. O Tomcat aponta pra pasta do server, no caso o ${catalina_base}. No fim, cada um clona o projeto onde quer, não achei uma forma decente para capturar o diretório dinamicamente.
 		// Path do diretório do TomCat
