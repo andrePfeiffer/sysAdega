@@ -10,21 +10,25 @@ import bebidas.dao.VinhoDAO;
 
 public class PedidoManager {
 
-	public static String criarPedido(int idVinho, int idCliente, int qtdVinho) {
+	public static String criarPedido(int idVinho, int idCliente, String[] qtdVinho) {
 		VinhoDAO vinhoDAO = new VinhoDAO();
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		ClienteDAO clienteDAO = new ClienteDAO();
 		
 		Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
+		List<Vinho> vinhos = new ArrayList<>();
+		vinhos.add(vinho);
 		Cliente cliente = clienteDAO.selecionarPorId(idCliente);
 		
 		Pedido pedido = new Pedido();
-		pedido.setVinho(vinho);
+		pedido.setVinhos(vinhos);
 		pedido.setEstadoAtual(pedido.getPedidoAberto());
 		pedido.setCliente(cliente);
-		pedido.setQtdVinho(qtdVinho);
 		pedido.setDtPedido(new Date());
-		pedido.setValorTotal(qtdVinho * vinho.getPrecoVinho());
+		
+		//TODO: precisa adicionar isso na tabela do relacionamento
+//		pedido.setQtdVinho(qtdVinho);
+//		pedido.setValorTotal(qtdVinho * vinho.getPrecoVinho());
 		
 		pedidoDAO.inserir(pedido);
 		
@@ -42,13 +46,15 @@ public class PedidoManager {
 		
 		if(pedido.getEstadoAtual() != pedido.getPedidoEncerrado()) {
 			// Atualiza o vinho
-			Vinho vinho = pedido.getVinho();
-			int qtdFinal = vinho.getQtdEstoque()-pedido.getQtdVinho();
-			if( qtdFinal < 0 ) {
-				return "Não foi possível encerrar o pedido: Estoque insuficiente!";
+			List<Vinho> vinhos = pedido.getVinhos();
+			for (Vinho vinho : vinhos) {
+				int qtdFinal = vinho.getQtdEstoque()-1; //TODO: substituir o 1 por pedido.getQtdVinho()
+				if( qtdFinal < 0 ) {
+					return "Não foi possível encerrar o pedido: Estoque insuficiente!";
+				}
+				vinho.setQtdEstoque(qtdFinal);
+				vinhoDAO.atualizar(vinho);
 			}
-			vinho.setQtdEstoque(qtdFinal);
-			vinhoDAO.atualizar(vinho);
 			
 			// Atualiza o pedido
 			pedido.setDtEncerramento(new Date());

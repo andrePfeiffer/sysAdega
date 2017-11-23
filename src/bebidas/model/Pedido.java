@@ -1,6 +1,8 @@
 package bebidas.model;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,6 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -32,13 +36,13 @@ public class Pedido {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Cliente cliente;
 	
-	@JoinColumn(name = "idVinho", referencedColumnName = "idVinho", nullable = false)
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Vinho vinho;	
-	
-	@Column(name = "qtdVinho")
-	private int qtdVinho;
-	
+	@ManyToMany
+	@JoinTable(name = "ItemPedido", 
+				joinColumns = {@JoinColumn(name = "idPedido")},
+				inverseJoinColumns = {@JoinColumn(name = "idVinho")}
+				)
+    private List<Vinho> vinhos = new ArrayList<>();
+
 	@Column(name = "dtPedido")
 	private Date dtPedido;
 	
@@ -63,6 +67,14 @@ public class Pedido {
 	@Transient
 	private State pedidoEncerrado = new PedidoEncerrado();
 	
+	public List<Vinho> getVinhos() {
+		return vinhos;
+	}
+
+	public void setVinhos(List<Vinho> vinhos) {
+		this.vinhos = vinhos;
+	}
+
 	public int getIdPedido() {
 		return idPedido;
 	}
@@ -77,22 +89,6 @@ public class Pedido {
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public Vinho getVinho() {
-		return vinho;
-	}
-
-	public void setVinho(Vinho vinho) {
-		this.vinho = vinho;
-	}
-
-	public int getQtdVinho() {
-		return qtdVinho;
-	}
-
-	public void setQtdVinho(int qtdVinho) {
-		this.qtdVinho = qtdVinho;
 	}
 
 	public Date getDtPedido() {
