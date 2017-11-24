@@ -5,3 +5,4 @@
 /.metadata/
 .classpath
 src/META-INF/persistence.xml
+.classpath

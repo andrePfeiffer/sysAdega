@@ -56,9 +56,10 @@
 	                <% for( Object pedidoObj : pedidos ) {%>
 	                <% Pedido pedido = (Pedido) pedidoObj; %>
 				      <tr>
-				      	<td><%=pedido.getNomeCliente()%></td>
-				      	<td><%=pedido.getVinho().getNomeVinho()%></td>
-				      	<td><%=pedido.getQtdVinho()%></td>
+				      <% //TODO: mostrar os vinhos %>
+				      	<td><% //=pedido.getNomeCliente()%></td>
+				      	<td><% //=pedido.getVinhos().getNomeVinho()%></td>
+				      	<td><% //=pedido.getQtdVinho()%></td>
 				      	<td><%=Utils.strDoubleParaMoeda(pedido.getValorTotal())%></td>
 				      	<td><%=Utils.dateParaStr(pedido.getDtPedido())%></td>
 				      	<td><%=Utils.dateParaStr(pedido.getDtEncerramento())%></td>

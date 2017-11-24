@@ -10,7 +10,7 @@ import bebidas.dao.VinhoDAO;
 
 public class PedidoManager {
 
-	public static String criarPedido(int idVinho, int idCliente, String[] qtdVinho) {
+	public static String criarPedido(int idVinho, int idCliente, int qtdVinho) {
 		VinhoDAO vinhoDAO = new VinhoDAO();
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		ClienteDAO clienteDAO = new ClienteDAO();
@@ -26,9 +26,10 @@ public class PedidoManager {
 		pedido.setCliente(cliente);
 		pedido.setDtPedido(new Date());
 		
-		//TODO: precisa adicionar isso na tabela do relacionamento
-//		pedido.setQtdVinho(qtdVinho);
-//		pedido.setValorTotal(qtdVinho * vinho.getPrecoVinho());
+		ItemPedido itemPedido = new ItemPedido();
+		itemPedido.setQtdVinho(qtdVinho);
+		int precoVinho = (int) vinho.getPrecoVinho();
+		itemPedido.setValorTotalItem(qtdVinho * precoVinho);
 		
 		pedidoDAO.inserir(pedido);
 		

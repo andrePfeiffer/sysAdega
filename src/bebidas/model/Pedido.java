@@ -42,7 +42,7 @@ public class Pedido {
 				inverseJoinColumns = {@JoinColumn(name = "idVinho")}
 				)
     private List<Vinho> vinhos = new ArrayList<>();
-
+	
 	@Column(name = "dtPedido")
 	private Date dtPedido;
 	
