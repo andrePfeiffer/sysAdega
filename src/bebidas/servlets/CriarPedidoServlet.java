@@ -18,12 +18,12 @@ public class CriarPedidoServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		int idVinho = Integer.parseInt(request.getParameter("vinho"));
-		int qtdVinho = Integer.parseInt(request.getParameter("qtdVinho"));
-		int idCliente = Integer.parseInt(request.getParameter("cliente"));		
+		String[] vinhos = request.getParameterValues("vinho");
+		String[] qtdVinhos = request.getParameterValues("qtdVinho");
+		int idCliente = Integer.parseInt(request.getParameter("cliente"));	
 
 		// Encaminhar para a classe especialista
-		String result = PedidoManager.criarPedido( idVinho, idCliente, qtdVinho);		
+		String result = PedidoManager.criarPedido(vinhos, idCliente, qtdVinhos);		
 		request.setAttribute("mensagem", result);
 		RequestDispatcher view = request.getRequestDispatcher("index.jsp");
 		

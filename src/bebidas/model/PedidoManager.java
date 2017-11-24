@@ -10,26 +10,32 @@ import bebidas.dao.VinhoDAO;
 
 public class PedidoManager {
 
-	public static String criarPedido(int idVinho, int idCliente, int qtdVinho) {
+	public static String criarPedido(String[] vinhos, int idCliente, String[] qtdVinhos) {
 		VinhoDAO vinhoDAO = new VinhoDAO();
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		ClienteDAO clienteDAO = new ClienteDAO();
 		
-		Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
-		List<Vinho> vinhos = new ArrayList<>();
-		vinhos.add(vinho);
+		List<Vinho> listaVinhos = new ArrayList<>();
+		int qtProdutos = vinhos.length;
+		for(int i=0; i < qtProdutos; i++) {
+			int idVinho = Integer.parseInt(vinhos[i]);
+			int qtdVinho = Integer.parseInt(qtdVinhos[i]);
+			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
+			listaVinhos.add(vinho);
+		}
+		
 		Cliente cliente = clienteDAO.selecionarPorId(idCliente);
 		
 		Pedido pedido = new Pedido();
-		pedido.setVinhos(vinhos);
+		pedido.setVinhos(listaVinhos);
 		pedido.setEstadoAtual(pedido.getPedidoAberto());
 		pedido.setCliente(cliente);
 		pedido.setDtPedido(new Date());
 		
-		ItemPedido itemPedido = new ItemPedido();
-		itemPedido.setQtdVinho(qtdVinho);
-		int precoVinho = (int) vinho.getPrecoVinho();
-		itemPedido.setValorTotalItem(qtdVinho * precoVinho);
+//		ItemPedido itemPedido = new ItemPedido();
+//		itemPedido.setQtdVinho(qtdVinho);
+//		int precoVinho = (int) vinho.getPrecoVinho();
+//		itemPedido.setValorTotalItem(qtdVinho * precoVinho);
 		
 		pedidoDAO.inserir(pedido);
 		
