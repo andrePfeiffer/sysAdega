@@ -54,7 +54,7 @@
 					<div class="row">
 						<div class="col-md-5">	
 			        		<label for="nomeCliente">Cliente</label>					
-							<select class="form-control" id="vinho" name="vinho" required>
+							<select class="form-control" id="vinho" name="cliente" required>
 								<% 
 								
 									for( Cliente cliente : clientes ) { 

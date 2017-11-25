@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import bebidas.dao.ClienteDAO;
+import bebidas.dao.ItemPedidoDAO;
 import bebidas.dao.PedidoDAO;
 import bebidas.dao.VinhoDAO;
 
@@ -14,30 +15,30 @@ public class PedidoManager {
 		VinhoDAO vinhoDAO = new VinhoDAO();
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		ClienteDAO clienteDAO = new ClienteDAO();
-		
-		List<Vinho> listaVinhos = new ArrayList<>();
-		int qtProdutos = vinhos.length;
-		for(int i=0; i < qtProdutos; i++) {
-			int idVinho = Integer.parseInt(vinhos[i]);
-			int qtdVinho = Integer.parseInt(qtdVinhos[i]);
-			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
-			listaVinhos.add(vinho);
-		}
+		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
 		
 		Cliente cliente = clienteDAO.selecionarPorId(idCliente);
-		
 		Pedido pedido = new Pedido();
-		pedido.setVinhos(listaVinhos);
 		pedido.setEstadoAtual(pedido.getPedidoAberto());
 		pedido.setCliente(cliente);
 		pedido.setDtPedido(new Date());
-		
-//		ItemPedido itemPedido = new ItemPedido();
-//		itemPedido.setQtdVinho(qtdVinho);
-//		int precoVinho = (int) vinho.getPrecoVinho();
-//		itemPedido.setValorTotalItem(qtdVinho * precoVinho);
-		
 		pedidoDAO.inserir(pedido);
+
+		int qtProdutos = vinhos.length;
+		for(int i=0; i < qtProdutos; i++) {
+			ItemPedido itemPedido = new ItemPedido();
+			int idVinho = Integer.parseInt(vinhos[i]);
+			int qtdVinho = Integer.parseInt(qtdVinhos[i]);
+			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
+			double precoVinho = vinho.getPrecoVinho();
+			double valorTotalItem = precoVinho * qtdVinho;
+			itemPedido.setPedido(pedido);
+			itemPedido.setQtdVinho(qtdVinho);
+			itemPedido.setVinho(vinho);
+			itemPedido.setValorTotalItem(valorTotalItem);
+			itemPedidoDAO.inserir(itemPedido);
+		}
+		
 		
 		//TODO: fazer o tratamento de erro
 		

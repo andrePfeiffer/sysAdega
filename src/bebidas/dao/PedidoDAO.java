@@ -29,6 +29,8 @@ public class PedidoDAO extends CommonsDAO {
 		
 		return pedido;
 	}
+	
+	
 
 	public boolean apagar(int identificador) {
 		EntityManagerFactory factory = HibernateUtil.getEntityManagerFactory();
