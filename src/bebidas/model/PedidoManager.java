@@ -8,6 +8,7 @@ import bebidas.dao.ClienteDAO;
 import bebidas.dao.ItemPedidoDAO;
 import bebidas.dao.PedidoDAO;
 import bebidas.dao.VinhoDAO;
+import bebidas.state.State;
 
 public class PedidoManager {
 
@@ -19,12 +20,15 @@ public class PedidoManager {
 		
 		Cliente cliente = clienteDAO.selecionarPorId(idCliente);
 		Pedido pedido = new Pedido();
-		pedido.setEstadoAtual(pedido.getPedidoAberto());
+//		State estadoPedido = pedido.getPedidoAberto();
+//		pedido.setEstadoAtual(estadoPedido);
+		pedido.setEstadoPedido("Aberto");
 		pedido.setCliente(cliente);
 		pedido.setDtPedido(new Date());
 		pedidoDAO.inserir(pedido);
 
 		int qtProdutos = vinhos.length;
+		double valorTotalPedido = 0.0;
 		for(int i=0; i < qtProdutos; i++) {
 			ItemPedido itemPedido = new ItemPedido();
 			int idVinho = Integer.parseInt(vinhos[i]);
@@ -32,6 +36,7 @@ public class PedidoManager {
 			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
 			double precoVinho = vinho.getPrecoVinho();
 			double valorTotalItem = precoVinho * qtdVinho;
+			valorTotalPedido += valorTotalItem;
 			itemPedido.setPedido(pedido);
 			itemPedido.setQtdVinho(qtdVinho);
 			itemPedido.setVinho(vinho);
@@ -39,6 +44,8 @@ public class PedidoManager {
 			itemPedidoDAO.inserir(itemPedido);
 		}
 		
+		pedido.setValorTotal(valorTotalPedido);
+		pedidoDAO.atualizar(pedido);
 		
 		//TODO: fazer o tratamento de erro
 		

@@ -45,8 +45,7 @@
 	                <thead>
 	                    <tr class="filters">
 	                        <th><input type="text" class="form-control" placeholder="Cliente" disabled /></th>
-	                        <th><input type="text" class="form-control" placeholder="Vinho" disabled /></th>
-	                        <th><input type="text" class="form-control" placeholder="Qtd Pedida" disabled /></th>
+	                        <th><input type="text" class="form-control" placeholder="Produtos" disabled /></th>
 	                        <th><input type="text" class="form-control" placeholder="Valor total" disabled /></th>
 	                        <th><input type="text" class="form-control" placeholder="Dt Pedido" disabled /></th>
 	                        <th><input type="text" class="form-control" placeholder="Dt Encerramento" disabled /></th>
@@ -56,10 +55,24 @@
 	                <% for( Object pedidoObj : pedidos ) {%>
 	                <% Pedido pedido = (Pedido) pedidoObj; %>
 				      <tr>
-				      <% //TODO: mostrar os vinhos %>
-				      	<td><% //=pedido.getNomeCliente()%></td>
-				      	<td><% //=pedido.getVinhos().getNomeVinho()%></td>
-				      	<td><% //=pedido.getQtdVinho()%></td>
+				      	<td><%=pedido.getCliente().getNomeCliente()%></td>
+				      	<td><table>
+				      	<tr>
+				      	<th>Vinho</th>
+				      	<th>Qtd</th>
+				      	</tr>
+				      	<%
+				      	List<ItemPedido> itens = pedido.getItensPedido();
+				      	for(ItemPedido item : itens){
+				      	%>	
+				      	<tr>
+				      		<td><%=item.getVinho().getNomeVinho() %></td>
+				      		<td><%=item.getQtdVinho() %></td>
+			      		</tr>
+				      	<%
+				      	}
+				      	%>
+				      	</table></td>
 				      	<td><%=Utils.strDoubleParaMoeda(pedido.getValorTotal())%></td>
 				      	<td><%=Utils.dateParaStr(pedido.getDtPedido())%></td>
 				      	<td><%=Utils.dateParaStr(pedido.getDtEncerramento())%></td>

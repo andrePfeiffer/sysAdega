@@ -2,6 +2,7 @@ package bebidas.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -26,11 +27,11 @@ public class ItemPedido {
 	@Column(name = "valorTotalItem")
 	private double valorTotalItem;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name="idPedido")
 	private Pedido pedido;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name="idVinho")
 	private Vinho vinho;
 

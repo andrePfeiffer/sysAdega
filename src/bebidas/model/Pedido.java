@@ -13,6 +13,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -36,13 +37,17 @@ public class Pedido {
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Cliente cliente;
 	
-	@ManyToMany
+	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "ItemPedido", 
 				joinColumns = {@JoinColumn(name = "idPedido")},
 				inverseJoinColumns = {@JoinColumn(name = "idVinho")}
 				)
     private List<Vinho> vinhos = new ArrayList<>();
-	
+
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinColumn(name="idPedido")
+    private List<ItemPedido> itensPedido = new ArrayList<>();
+
 	@Column(name = "dtPedido")
 	private Date dtPedido;
 	
@@ -73,6 +78,14 @@ public class Pedido {
 
 	public void setVinhos(List<Vinho> vinhos) {
 		this.vinhos = vinhos;
+	}
+
+	public List<ItemPedido> getItensPedido() {
+		return itensPedido;
+	}
+
+	public void setItensPedido(List<ItemPedido> itensPedido) {
+		this.itensPedido = itensPedido;
 	}
 
 	public int getIdPedido() {
@@ -117,6 +130,10 @@ public class Pedido {
 	
 	public State getEstadoAtual() {
 		return estadoAtual;
+	}
+	
+	public void setEstadoPedido(String estadoPedido) {
+		this.estadoPedido = estadoPedido;
 	}
 
 	public void setEstadoAtual(State estadoAtual) {
