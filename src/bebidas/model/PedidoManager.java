@@ -53,35 +53,44 @@ public class PedidoManager {
 		
 	}
 	
+	// o Método encerrar foi transferido para dentro do State
 	public static String encerrarPedido(int idPedido) {
-		VinhoDAO vinhoDAO = new VinhoDAO();
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		
 		Pedido pedido = pedidoDAO.selecionarPorId(idPedido);
 		
-		if(pedido.getEstadoAtual() != pedido.getPedidoEncerrado()) {
-			// Atualiza o vinho
-			List<Vinho> vinhos = pedido.getVinhos();
-			for (Vinho vinho : vinhos) {
-				int qtdFinal = vinho.getQtdEstoque()-1; //TODO: substituir o 1 por pedido.getQtdVinho()
-				if( qtdFinal < 0 ) {
-					return "Não foi possível encerrar o pedido: Estoque insuficiente!";
-				}
-				vinho.setQtdEstoque(qtdFinal);
-				vinhoDAO.atualizar(vinho);
-			}
-			
-			// Atualiza o pedido
-			pedido.setDtEncerramento(new Date());
-			pedido.setEstadoAtual(pedido.getPedidoEncerrado());
-			pedidoDAO.atualizar(pedido);
-			
-			return "Pedido encerrado com sucesso!";
-		}
-		
-		return "Não foi possível encerrar o pedido: Pedido já encerrado!";
-		
+		return pedido.encerrarPedido();
 	}
+	
+//	public static String encerrarPedido(int idPedido) {
+//		VinhoDAO vinhoDAO = new VinhoDAO();
+//		PedidoDAO pedidoDAO = new PedidoDAO();
+//		
+//		Pedido pedido = pedidoDAO.selecionarPorId(idPedido);
+//		
+//		if(pedido.getEstadoAtual() != pedido.getPedidoEncerrado()) {
+//			// Atualiza o vinho
+//			List<Vinho> vinhos = pedido.getVinhos();
+//			for (Vinho vinho : vinhos) {
+//				int qtdFinal = vinho.getQtdEstoque()-1; //TODO: substituir o 1 por pedido.getQtdVinho()
+//				if( qtdFinal < 0 ) {
+//					return "Não foi possível encerrar o pedido: Estoque insuficiente!";
+//				}
+//				vinho.setQtdEstoque(qtdFinal);
+//				vinhoDAO.atualizar(vinho);
+//			}
+//			
+//			// Atualiza o pedido
+//			pedido.setDtEncerramento(new Date());
+//			pedido.setEstadoAtual(pedido.getPedidoEncerrado());
+//			pedidoDAO.atualizar(pedido);
+//			
+//			return "Pedido encerrado com sucesso!";
+//		}
+//		
+//		return "Não foi possível encerrar o pedido: Pedido já encerrado!";
+//		
+//	}
 
 	public static List<Pedido> consultarPedidoPorEstado(String estadoPedido) {
 		PedidoDAO pedidoDAO = new PedidoDAO();
@@ -92,6 +101,22 @@ public class PedidoManager {
 			lista = pedidoDAO.selecionarPorEstado(estadoPedido);
 		}
 		return lista;
+	}
+	
+	public static String prepararPedido(int idPedido) {
+		PedidoDAO pedidoDAO = new PedidoDAO();
+		
+		Pedido pedido = pedidoDAO.selecionarPorId(idPedido);
+		
+		return pedido.prepararPedido();
+	}
+	
+	public static String cancelarPedido(int idPedido) {
+		PedidoDAO pedidoDAO = new PedidoDAO();
+		
+		Pedido pedido = pedidoDAO.selecionarPorId(idPedido);
+		
+		return pedido.cancelarPedido();
 	}
 }
 

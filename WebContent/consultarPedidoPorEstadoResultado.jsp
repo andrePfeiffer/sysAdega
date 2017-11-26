@@ -78,14 +78,28 @@
 				      	<td><%=Utils.dateParaStr(pedido.getDtEncerramento())%></td>
 				      	<td>
 				      	<%
-				      		if( pedido.getEstadoAtualDoPedido().equals("Aberto")) {
+				      		if( pedido.getEstadoPedido().equals("Aberto")) {
 				      	%>
-				      			<a href="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-warning">Encerrar</a>
+				      	<td><a href="PreparaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Preparar</a></td>
+				      	<td><a href="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
+
 				      	<%
-				      		} else {
-				      			out.println("<i>Encerrado</i>");
+				      		} else if( pedido.getEstadoPedido().equals("Em andamento")) {
+				      	%>
+				      	<td><a href="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Encerrar</a></td>
+				      	<td><a href="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
+				      	<%
+				      		} else if( pedido.getEstadoPedido().equals("Encerrado")) {
+				      	%>
+				      	<td><p class="text-muted">Encerrado</p></td>
+				      	<%
+				      		} else if ( pedido.getEstadoPedido().equals("Cancelado")) {				      	
+				      	%>
+				      	<td><p class="text-muted">Cancelado</p></td>
+				      	<%
 				      		}
-				      	%></td>  	
+				      	%>				      			
+				      	</td>  	
 				      	<td></td>
 				      </tr>
 				    <% } %>

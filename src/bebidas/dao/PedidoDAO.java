@@ -21,8 +21,14 @@ public class PedidoDAO extends CommonsDAO {
 			case "Aberto":
 				pedido.setEstadoAtual(pedido.getPedidoAberto());
 				break;
+			case "Em andamento":
+				pedido.setEstadoAtual(pedido.getPedidoEmAndamento());
+				break;
 			case "Encerrado":
 				pedido.setEstadoAtual(pedido.getPedidoEncerrado());
+				break;
+			case "Cancelado":
+				pedido.setEstadoAtual(pedido.getPedidoCancelado());
 				break;
 			}
 		}
