@@ -74,11 +74,11 @@
 						<label for="cidade">Cidade</label>					
 						<input type="text" class="form-control" id="cidade" name="cidade" maxlength="150" required value="<%if(cidade!=null){out.println(cidade);}%>"/>
 					</div>
-					<div class="col-md-1">
+					<div class="col-md-2">
 						<label for="estado">Estado</label>					
 						<input type="text" class="form-control" id="estado" name="estado" maxlength="150" required value="<%if(estado!=null){out.println(estado);}%>"/>
 					</div>
-					<div class="col-md-5">
+					<div class="col-md-4">
 						<label for="pais">País</label>					
 						<input type="text" class="form-control" id="pais" name="pais" maxlength="150" required value="<%if(pais!=null){out.println(pais);}%>"/>
 					</div>

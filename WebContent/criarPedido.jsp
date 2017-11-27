@@ -171,7 +171,7 @@
 				valorTotalPedido += parseFloat($(this).val());
 				} 			
 		});
-		$("#txtTotal").html("Valor total do pedido: R$ " + valorTotalPedido.toFixed(2));
+		$("#txtTotal").html(" Valor total do pedido: R$ " + valorTotalPedido.toFixed(2));
 	});
 	
 	
