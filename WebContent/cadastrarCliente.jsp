@@ -42,7 +42,7 @@
 					</div>
 					<div class="col-md-5">
 						<label for="cpf">Cpf</label>					
-						<input type="text" class="form-control" id="cpf" name="cpf" maxlength="150" onblur="validaCPF(this)" required value="<%if(cpf!=null){out.println(cpf);}%>"/>
+						<input type="text" class="form-control" id="cpf" name="cpf" maxlength="150" onblur="validaCPF(this)" required="required" value="<%if(cpf!=null){out.println(cpf);}%>"/>
 					</div>
 				</div>
 				<br><br>
@@ -109,13 +109,6 @@ $(document).ready(function() {
 
             //Valida o formato do CEP.
             if(validacep.test(cep)) {
-
-                //Preenche os campos com "..." enquanto consulta webservice.
-                $("#endereco").val("...");
-                $("#bairro").val("...");
-                $("#cidade").val("...");
-                $("#estado").val("...");
-                $("#pais").val("...");
 
                 //Consulta o webservice viacep.com.br/
                 $.getJSON("//viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {

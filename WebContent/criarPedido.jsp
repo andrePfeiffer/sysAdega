@@ -54,7 +54,7 @@
 					<div class="row">
 						<div class="col-md-5">	
 			        		<label for="nomeCliente">Cliente</label>					
-							<select class="form-control" id="vinho" name="cliente" required>
+							<select class="form-control" id="cliente" name="cliente" required>
 								<% 
 								
 									for( Cliente cliente : clientes ) { 
@@ -79,7 +79,7 @@
 									
 										for( Vinho vinho : vinhos ) { 
 									
-											selectVinhos += "<option value=" + vinho.getIdVinho() + ">" + vinho.getNomeVinho() + "</option>";
+											selectVinhos += "<option value=" + vinho.getIdVinho() + " price=" + vinho.getPrecoVinho() + ">" + vinho.getNomeVinho() + "</option>";
 									 
 										} 
 										
@@ -90,12 +90,25 @@
 					  		<div class="col-md-2">	
 					  			<label for="qtdVinho">Quantidade</label>		
 								<input type="number" min="0" class="form-control" id="qtdVinho" name="qtdVinho" required/>
-							</div>		
-							<div class="col-md-5">
+							</div>	
+							<div class="col-md-2">	
+					  			<label for="precoVinho">Preço</label>		
+								<input type="number" min="0" class="form-control" id="precoVinho" name="precoVinho" readonly="readonly" value="0.00"/>
+							</div>	
+							<div class="col-md-2">
 					  			<span><i class="fa fa-plus fa-2x addWine" aria-hidden="true"></i></span>&nbsp;&nbsp;&nbsp;
 					  			
 							</div>	
-						</div> 
+						</div>
+						</div>	
+						<br><br>																	
+						<hr style="border-top-color:#000000"> 
+						<div id="total">
+							<div class="row">
+								<div class="col-md-12" id="txtTotal">
+									Valor total do pedido: R$ 0,00
+								</div>
+							</div>
 						</div>				
 					</div>
 					
@@ -104,7 +117,9 @@
 				
 							
 			</fieldset>
+			<br>
 			<button type="submit" class="btn btn-primary">Criar Pedido</button>
+			<br><br>
 		</form>		
 	</div>
 	<!-- fim .container da pagina -->
@@ -114,6 +129,7 @@
 	<script type="text/javascript">
 	
 	var idVinho = 0;
+	var valorTotalPedido = 0;
 	
 	$(document).on('click', '.addWine', function() {
 		  $("#vinhos").append("<div class='row' id='"+ idVinho +"'>"+							
@@ -122,17 +138,45 @@
 			<% out.print('"'+ selectVinhos + '"'); %> + 
 			"</select></div><div class='col-md-2'>"+		
 			"<br><input type='number' min='0' class='form-control' id='qtdVinho' name='qtdVinho' required/>"+
-			"</div><div class='col-md-5'>"+
+			"</div><div class='col-md-2'><label for='qtdVinho'></label>"+		
+			"<input type='number' min='0' class='form-control' id='precoVinho' name='precoVinho' readonly='readonly'/>"+
+			"</div><div class='col-md-2'>"+
   			"<span><i class='fa fa-plus fa-2x addWine' aria-hidden='true' onclick='addWineLine()'></i></span>&nbsp;&nbsp;&nbsp;"+
-  			"<span><i class='fa fa-trash fa-2x removeWine' aria-hidden='true' onclick='removeWineLine("+idVinho+")'></i></span>&nbsp;"+
+  			"<span><i class='fa fa-trash fa-2x removeWine' aria-hidden='true' onclick='removeWineLine("+idVinho+",this)'></i></span>&nbsp;"+
 			"</div></div>");
 		  
 		  idVinho++;
 		});
 	
-	function removeWineLine(id){
+	function removeWineLine(id,objeto){
+		valorTotalPedido -= $(objeto).parent().parent().parent().find('#precoVinho').val();
 		$("#"+id).empty();
+		$("#txtTotal").html("Valor total do pedido: R$ " + valorTotalPedido.toFixed(2));
 	}
+	
+	$(document).on('change', '#qtdVinho', function() {
+		var precoVinho = $(this).parent().siblings().find("#vinho option:selected").attr("price"); 
+		$(this).parent().siblings().next().next().find("#precoVinho").val(($(this).val() * precoVinho).toFixed(2));		
+	});	
+	
+	$(document).on('change', '#vinho', function() {
+		$(this).parent().parent().find("#qtdVinho").val("");
+		$(this).parent().parent().find("#precoVinho").val("");
+	});
+	
+	$(document).on('change', '#qtdVinho', function() {
+		valorTotalPedido = 0;
+		$.each( $(".form-control"), function() {
+			if( $(this).attr('readonly')=="readonly" ){
+				valorTotalPedido += parseFloat($(this).val());
+				} 			
+		});
+		$("#txtTotal").html("Valor total do pedido: R$ " + valorTotalPedido.toFixed(2));
+	});
+	
+	
+	
+	
 	</script>
 </body>
 </html>
