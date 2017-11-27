@@ -19,9 +19,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import bebidas.state.PedidoAberto;
-import bebidas.state.PedidoEncerrado;
-import bebidas.state.State;
+import bebidas.state.*;
+
 
 @Entity
 @Table(name="Pedido")
@@ -61,16 +60,19 @@ public class Pedido {
 	private String estadoPedido;
 	
 	@Transient
-	private String estadoAtualDoPedido;
-	
-	@Transient
 	private State estadoAtual;
 	
 	@Transient
-	private State pedidoAberto = new PedidoAberto();
+	private State pedidoAberto = new PedidoAberto(this);
 	
 	@Transient
-	private State pedidoEncerrado = new PedidoEncerrado();
+	private State pedidoEmAndamento = new PedidoEmAndamento(this);
+	
+	@Transient
+	private State pedidoEncerrado = new PedidoEncerrado(this);
+
+	@Transient
+	private State pedidoCancelado = new PedidoCancelado(this);
 	
 	public List<Vinho> getVinhos() {
 		return vinhos;
@@ -138,6 +140,7 @@ public class Pedido {
 
 	public void setEstadoAtual(State estadoAtual) {
 		this.estadoAtual = estadoAtual;
+		this.setEstadoPedido(this.estadoAtual.getDescricaoEstadoPedido());
 	}
 
 	public State getPedidoAberto() {
@@ -152,8 +155,42 @@ public class Pedido {
 		return estadoPedido;
 	}
 
-	public String getEstadoAtualDoPedido() {
-		return estadoAtual.estadoPedido();
+	public State getPedidoEmAndamento() {
+		return pedidoEmAndamento;
 	}
+
+	public void setPedidoEmAndamento(State pedidoEmAndamento) {
+		this.pedidoEmAndamento = pedidoEmAndamento;
+	}
+
+	public State getPedidoCancelado() {
+		return pedidoCancelado;
+	}
+
+	public void setPedidoCancelado(State pedidoCancelado) {
+		this.pedidoCancelado = pedidoCancelado;
+	}
+
+	public void setPedidoAberto(State pedidoAberto) {
+		this.pedidoAberto = pedidoAberto;
+	}
+
+	public void setPedidoEncerrado(State pedidoEncerrado) {
+		this.pedidoEncerrado = pedidoEncerrado;
+	}
+	
+	// Métodos do State
+	public String prepararPedido() {
+		return estadoAtual.preparar();
+	}
+	
+	public String encerrarPedido() {
+		return estadoAtual.encerrar();
+	}
+	
+	public String cancelarPedido() {
+		return estadoAtual.cancelar();
+	}
+	
 
 }
