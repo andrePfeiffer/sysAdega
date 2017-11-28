@@ -3,6 +3,31 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<%@include file="_header.jsp"%>
+	
+	<style>
+		.modal .modal-header {
+		  border-bottom: none;
+		  position: relative;
+		}
+		.modal .modal-header .btn {
+		  position: absolute;
+		  top: 0;
+		  right: 0;
+		  margin-top: 0;
+		  border-top-left-radius: 0;
+		  border-bottom-right-radius: 0;
+		}
+		.modal .modal-footer {
+		  border-top: none;
+		  padding: 0;
+		}
+		.modal .modal-footer .btn-group > .btn:first-child {
+		  border-bottom-left-radius: 0;
+		}
+		.modal .modal-footer .btn-group > .btn:last-child {
+		  border-top-right-radius: 0;
+		}
+	</style>
 </head>
 <body>
 	<%@include file="_cabecalho.jsp"%>
@@ -80,14 +105,14 @@
 				      	<%
 				      		if( pedido.getEstadoPedido().equals("Aberto")) {
 				      	%>
-				      	<td><a href="PreparaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Preparar</a></td>
-				      	<td><a href="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
+				      	<td><a data-toggle="modal" href="#myModal" local="PreparaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Preparar</a></td>
+				      	<td><a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
 
 				      	<%
 				      		} else if( pedido.getEstadoPedido().equals("Em andamento")) {
 				      	%>
-				      	<td><a href="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Encerrar</a></td>
-				      	<td><a href="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
+				      	<td><a data-toggle="modal" href="#myModal" local="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Encerrar</a></td>
+				      	<td><a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
 				      	<%
 				      		} else if( pedido.getEstadoPedido().equals("Encerrado")) {
 				      	%>
@@ -107,11 +132,47 @@
 	        </div>
     	</div>  
 
-		
+	<div id="myModal" class="modal fade in">
+        <div class="modal-dialog">
+            <div class="modal-content">
+ 
+                <div class="modal-header">
+                    <a class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span></a>
+                    <center><h3 class="modal-title">Confirmar Ação</h3></center>
+                </div>
+                <div class="modal-body">
+                    <center>
+	                    <h4>Deseja realmente prosseguir?</h4>
+	                    <br>
+	                    <p>Esta ação não poderá ser desfeita, clique em cancelar para retornar ou em confirmar para prosseguir com a ação.</p>
+	                </center>
+                </div>
+                <div class="modal-footer">
+                    <div class="btn-group">
+                        <button class="btn btn-danger" data-dismiss="modal" id="cancelar"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
+                        <button class="btn btn-primary" id="confirmar"><span class="glyphicon glyphicon-check"></span> Confirmar</button>
+                    </div>
+                </div>
+ 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dalog -->
+    </div><!-- /.modal -->
 	</div>
 	<!-- fim .container da pagina -->
 	<%
 		}
 	%>
 </body>
+<script language="JavaScript">
+	var urlAtual = "";
+	$(document).on('click', 'a', function() {
+		urlAtual = $(this).attr("local");
+	});
+	$(document).on('click', '#confirmar', function() {
+		window.location.href = urlAtual;
+	});
+	$(document).on('click', '#cancelar', function() {
+		urlAtual = "";
+	});
+ </script>
 </html>
