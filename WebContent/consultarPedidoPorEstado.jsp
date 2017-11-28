@@ -28,8 +28,7 @@
 							<option value="Encerrado">Encerrados</option>
 							<option value="Cancelado">Cancelados</option>
 							<option value="todos">Todos</option>
-							<!-- TODO: pensar em outros estados possiveis e implementar o padrão State -->
-			  			</select>			  				
+						</select>			  				
 					</div>
 						
 			</fieldset>

@@ -69,12 +69,13 @@
 	            <table class="table">
 	                <thead>
 	                    <tr class="filters">
-	                        <th><input type="text" class="form-control" placeholder="Cliente" disabled /></th>
-	                        <th><input type="text" class="form-control" placeholder="Produtos" disabled /></th>
+	                        <th style="width: 150px;"><input type="text" class="form-control" placeholder="Cliente" disabled /></th>
+	                        <th style="width: 200px;"><input type="text" class="form-control" placeholder="Vinhos | Qtd" disabled /></th>
 	                        <th><input type="text" class="form-control" placeholder="Valor total" disabled /></th>
 	                        <th><input type="text" class="form-control" placeholder="Dt Pedido" disabled /></th>
 	                        <th><input type="text" class="form-control" placeholder="Dt Encerramento" disabled /></th>
-	                        <th></th>
+	                        <th><input type="text" class="form-control" placeholder="Estado" disabled /></th>
+	                        <th style="width: 200px;"><input type="text" class="form-control" placeholder="Ações" disabled /></th>
 	                    </tr>
 	                </thead>
 	                <% for( Object pedidoObj : pedidos ) {%>
@@ -82,17 +83,12 @@
 				      <tr>
 				      	<td><%=pedido.getCliente().getNomeCliente()%></td>
 				      	<td><table>
-				      	<tr>
-				      	<th>Vinho</th>
-				      	<th>Qtd</th>
-				      	</tr>
 				      	<%
 				      	List<ItemPedido> itens = pedido.getItensPedido();
 				      	for(ItemPedido item : itens){
 				      	%>	
 				      	<tr>
-				      		<td><%=item.getVinho().getNomeVinho() %></td>
-				      		<td><%=item.getQtdVinho() %></td>
+				      		<%=item.getVinho().getNomeVinho() %> | <%=item.getQtdVinho() %><br>
 			      		</tr>
 				      	<%
 				      	}
@@ -101,31 +97,38 @@
 				      	<td><%=Utils.strDoubleParaMoeda(pedido.getValorTotal())%></td>
 				      	<td><%=Utils.dateParaStr(pedido.getDtPedido())%></td>
 				      	<td><%=Utils.dateParaStr(pedido.getDtEncerramento())%></td>
+				      	<td><%=pedido.getEstadoPedido()%></td>
 				      	<td>
 				      	<%
 				      		if( pedido.getEstadoPedido().equals("Aberto")) {
 				      	%>
-				      	<td><a data-toggle="modal" href="#myModal" local="PreparaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Preparar</a></td>
-				      	<td><a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
+				      	<a data-toggle="modal" href="#myModal" local="PreparaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-primary"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 
 				      	<%
 				      		} else if( pedido.getEstadoPedido().equals("Em andamento")) {
+
 				      	%>
-				      	<td><a data-toggle="modal" href="#myModal" local="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-default">Encerrar</a></td>
-				      	<td><a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger">Cancelar</a></td>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
+				      	<a data-toggle="modal" href="#myModal" local="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-warning"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 				      	<%
 				      		} else if( pedido.getEstadoPedido().equals("Encerrado")) {
 				      	%>
-				      	<td><p class="text-muted">Encerrado</p></td>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 				      	<%
 				      		} else if ( pedido.getEstadoPedido().equals("Cancelado")) {				      	
 				      	%>
-				      	<td><p class="text-muted">Cancelado</p></td>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 				      	<%
 				      		}
 				      	%>				      			
-				      	</td>  	
-				      	<td></td>
+				      	</td> 
 				      </tr>
 				    <% } %>
 	            </table>

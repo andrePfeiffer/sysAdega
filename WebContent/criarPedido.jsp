@@ -191,6 +191,7 @@
 		var precoVinho = $(this).parent().siblings().find("#vinho option:selected").attr("price");
 		
 		if ($(this).val() < 1){
+			alert("A quantidade de vinhos precisa ser positiva. Alterando para 1 ...");
 			$(this).val("1");
 			$(this).parent().siblings().next().next().find("#precoVinho").val($(this).parent().siblings().find("#vinho option:selected").attr("price"));
 		}

@@ -115,13 +115,6 @@ $(document).ready(function() {
             //Valida o formato do CEP.
             if(validacep.test(cep)) {
 
-                //Preenche os campos com "..." enquanto consulta webservice.
-                $("#endereco").val("...");
-                $("#bairro").val("...");
-                $("#cidade").val("...");
-                $("#estado").val("...");
-                $("#pais").val("...");
-
                 //Consulta o webservice viacep.com.br/
                 $.getJSON("//viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
 
