@@ -103,7 +103,7 @@
 				      		if( pedido.getEstadoPedido().equals("Aberto")) {
 				      	%>
 				      	<a data-toggle="modal" href="#myModal" local="PreparaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-primary"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
-				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-check fa-lg' aria-hidden='true' title='Encerrar'></i></a>
 				      	<a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 
 				      	<%
@@ -111,19 +111,19 @@
 
 				      	%>
 				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
-				      	<a data-toggle="modal" href="#myModal" local="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-warning"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#myModal" local="EncerraPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-success"><i class='fa fa-check fa-lg' aria-hidden='true' title='Encerrar'></i></a>
 				      	<a data-toggle="modal" href="#myModal" local="CancelaPedido.do?idPedido=<%=pedido.getIdPedido()%>" class="btn btn-danger"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 				      	<%
 				      		} else if( pedido.getEstadoPedido().equals("Encerrado")) {
 				      	%>
 				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
-				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-check fa-lg' aria-hidden='true' title='Encerrar'></i></a>
 				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 				      	<%
 				      		} else if ( pedido.getEstadoPedido().equals("Cancelado")) {				      	
 				      	%>
 				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-rocket fa-lg' aria-hidden='true' title='Preparar'></i></a>
-				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-power-off fa-lg' aria-hidden='true' title='Encerrar'></i></a>
+				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-check fa-lg' aria-hidden='true' title='Encerrar'></i></a>
 				      	<a data-toggle="modal" href="#" class="btn disabled"><i class='fa fa-ban fa-lg' aria-hidden='true' title='Cancelar'></i></a>
 				      	<%
 				      		}

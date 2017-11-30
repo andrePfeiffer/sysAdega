@@ -37,8 +37,8 @@
 				
 				<div class="row">
 					<div class="col-md-7">	
-		        		<label for="nomeVinho">Nome</label>					
-						<input type="text" class="form-control" id="nomeCliente" name="nomeCliente" maxlength="150" required value="<%if(nomeCliente!=null){out.println(nomeCliente);}%>"/>						
+		        		<label for="nomeCliente">Nome</label>					
+						<input type="text" autofocus class="form-control" id="nomeCliente" name="nomeCliente" maxlength="150" required value="<%if(nomeCliente!=null){out.println(nomeCliente);}%>"/>						
 					</div>
 					<div class="col-md-5">
 						<label for="cpf">Cpf</label>					
@@ -57,7 +57,7 @@
 					</div>
 					<div class="col-md-1">
 						<label for="numero">Número</label>					
-						<input type="text" class="form-control" id="numero" name="numero" maxlength="150" required value="<%if(numero!=null){out.println(numero);}%>"/>
+						<input type="number" class="form-control" id="numero" name="numero" maxlength="150" required value="<%if(numero!=null){out.println(numero);}%>"/>
 					</div>
 					<div class="col-md-2">
 						<label for="complemento">Complemento</label>					
@@ -185,7 +185,7 @@ function coreCPFValidador(cpf) {
 function validaCPF(value){
 	if (!coreCPFValidador(value.value)){
 		alert("Por favor, digite um CPF válido.");
-		$('.cpf').html("");
+		$('#cpf').val("");
 	}
 }
 
