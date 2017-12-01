@@ -16,24 +16,55 @@ public class PedidoManager {
 		VinhoDAO vinhoDAO = new VinhoDAO();
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		ClienteDAO clienteDAO = new ClienteDAO();
-		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
+		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();		
 		
+		// Verifica se há ao menos um vinho no pedido
+		if(vinhos == null) {
+			return "Não foi possível criar pedido vazio";
+		}
+		
+		// Verifica a quantidade de cada item do pedido
+		int qtProdutos = vinhos.length;
+		for(int i=0; i < qtProdutos; i++) {
+			int idVinho = Integer.parseInt(vinhos[i]);
+			int qtdVinho = Integer.parseInt(qtdVinhos[i]);
+			if(qtdVinho < 1) {
+				return "Não foi possível criar item de pedido com quantidade menor que 1";
+			}
+			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
+			int qtdEstoque = vinho.getQtdEstoque();
+			if(qtdVinho > qtdEstoque) {
+				return "Estoque insuficiente";
+			}
+		}
+		
+		// Inicializa mensagem de retorno
+		String mensagem = "";
+		
+		// Cria o pedido		
 		Cliente cliente = clienteDAO.selecionarPorId(idCliente);
 		Pedido pedido = new Pedido();
-//		State estadoPedido = pedido.getPedidoAberto();
-//		pedido.setEstadoAtual(estadoPedido);
 		pedido.setEstadoPedido("Aberto");
 		pedido.setCliente(cliente);
 		pedido.setDtPedido(new Date());
-		pedidoDAO.inserir(pedido);
-
-		int qtProdutos = vinhos.length;
+		// Insere o pedido
+		try {
+			pedidoDAO.inserir(pedido);
+			mensagem = "Pedido criado com sucesso.";
+		} catch( Exception e ) {
+			e.printStackTrace();
+			mensagem = "Não foi possível criar o pedido";
+			return mensagem;
+		}
+		
+		//Insere itens do pedido
 		double valorTotalPedido = 0.0;
 		for(int i=0; i < qtProdutos; i++) {
 			ItemPedido itemPedido = new ItemPedido();
 			int idVinho = Integer.parseInt(vinhos[i]);
 			int qtdVinho = Integer.parseInt(qtdVinhos[i]);
 			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
+			String nomeVinho = vinho.getNomeVinho();
 			double precoVinho = vinho.getPrecoVinho();
 			double valorTotalItem = precoVinho * qtdVinho;
 			valorTotalPedido += valorTotalItem;
@@ -41,15 +72,25 @@ public class PedidoManager {
 			itemPedido.setQtdVinho(qtdVinho);
 			itemPedido.setVinho(vinho);
 			itemPedido.setValorTotalItem(valorTotalItem);
-			itemPedidoDAO.inserir(itemPedido);
+			try {
+				itemPedidoDAO.inserir(itemPedido);
+				mensagem = mensagem + " " + nomeVinho + " (" + qtdVinho + ").";
+			} catch( Exception e ) {
+				e.printStackTrace();
+				mensagem = "Não foi possível inserir item do pedido";				
+				return mensagem;
+			}
+			// Retira qtde do estoque do vinho (reserva qtde para o pedido)
+      		int qtdFinal = vinho.getQtdEstoque() - qtdVinho;
+	      	vinho.setQtdEstoque(qtdFinal);
+	      	vinhoDAO.atualizar(vinho);      		
 		}
 		
+		// Atualiza o valor total do pedido
 		pedido.setValorTotal(valorTotalPedido);
 		pedidoDAO.atualizar(pedido);
-		
-		//TODO: fazer o tratamento de erro
-		
-		return "Pedido cadastrado com sucesso";
+      	
+		return mensagem;
 		
 	}
 	
@@ -62,35 +103,6 @@ public class PedidoManager {
 		return pedido.encerrarPedido();
 	}
 	
-//	public static String encerrarPedido(int idPedido) {
-//		VinhoDAO vinhoDAO = new VinhoDAO();
-//		PedidoDAO pedidoDAO = new PedidoDAO();
-//		
-//		Pedido pedido = pedidoDAO.selecionarPorId(idPedido);
-//		
-//		if(pedido.getEstadoAtual() != pedido.getPedidoEncerrado()) {
-//			// Atualiza o vinho
-//			List<Vinho> vinhos = pedido.getVinhos();
-//			for (Vinho vinho : vinhos) {
-//				int qtdFinal = vinho.getQtdEstoque()-1; //TODO: substituir o 1 por pedido.getQtdVinho()
-//				if( qtdFinal < 0 ) {
-//					return "Não foi possível encerrar o pedido: Estoque insuficiente!";
-//				}
-//				vinho.setQtdEstoque(qtdFinal);
-//				vinhoDAO.atualizar(vinho);
-//			}
-//			
-//			// Atualiza o pedido
-//			pedido.setDtEncerramento(new Date());
-//			pedido.setEstadoAtual(pedido.getPedidoEncerrado());
-//			pedidoDAO.atualizar(pedido);
-//			
-//			return "Pedido encerrado com sucesso!";
-//		}
-//		
-//		return "Não foi possível encerrar o pedido: Pedido já encerrado!";
-//		
-//	}
 
 	public static List<Pedido> consultarPedidoPorEstado(String estadoPedido) {
 		PedidoDAO pedidoDAO = new PedidoDAO();

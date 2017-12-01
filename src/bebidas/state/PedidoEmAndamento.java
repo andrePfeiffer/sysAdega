@@ -31,40 +31,36 @@ public class PedidoEmAndamento implements State {
 
 	@Override
 	public String encerrar() {
-		
-		// Atualiza o vinho
-		VinhoDAO vinhoDAO = new VinhoDAO();
-		List<ItemPedido> itens = pedido.getItensPedido();
-      	for(ItemPedido item : itens){
-      		Vinho vinho = item.getVinho();
-      		int qtdVinho = item.getQtdVinho();
-      		int qtdFinal = vinho.getQtdEstoque() - qtdVinho;
-      		if (qtdFinal < 0) {
-      			return "ERRO: Não foi possível encerraro o pedido: Estoque insuficiente!";
-      		}
-      		vinho.setQtdEstoque(qtdFinal);
-      		vinhoDAO.atualizar(vinho);      		
-      	}
 	
-			// Atualiza o pedido
-      		PedidoDAO pedidoDAO = new PedidoDAO();
-			pedido.setDtEncerramento(new Date());
-			pedido.setEstadoAtual(pedido.getPedidoEncerrado());
-			pedidoDAO.atualizar(pedido);
-			
-			return "Pedido encerrado com sucesso!";
+		// Atualiza o pedido
+      	PedidoDAO pedidoDAO = new PedidoDAO();
+		pedido.setDtEncerramento(new Date());
+		pedido.setEstadoAtual(pedido.getPedidoEncerrado());
+		pedidoDAO.atualizar(pedido);
+		
+		return "Pedido encerrado com sucesso!";
 	}
 
 	@Override
 	public String cancelar() {
+		
 		pedido.setEstadoAtual(pedido.getPedidoCancelado());
 		
 		// atualiza pedido
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		pedidoDAO.atualizar(pedido);
-				
+		
+		// retorna qtdes do pedido ao estoque
+		VinhoDAO vinhoDAO = new VinhoDAO();
+		List<ItemPedido> itens = pedido.getItensPedido();
+      	for(ItemPedido item : itens){
+      		Vinho vinho = item.getVinho();
+      		int qtdVinho = item.getQtdVinho();
+      		int qtdFinal = vinho.getQtdEstoque() + qtdVinho;
+      		vinho.setQtdEstoque(qtdFinal);
+      		vinhoDAO.atualizar(vinho);      		
+      	}
+		
 		return "Pedido cancelado com sucesso";
 	}
-
-
 }
