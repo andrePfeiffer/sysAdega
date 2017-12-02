@@ -72,6 +72,7 @@ public class ClienteManager {
 			return mensagem;
 		}
 		
+		// Verifica se o CPF é válido
 		if(!isCPF(cpf.replaceAll("[^0-9]", ""))){
 			String mensagem = "Não foi possível cadastrar o cliente: Digite um CPF válido.";
 			return mensagem;
@@ -113,6 +114,12 @@ public class ClienteManager {
 		// Verifica se todos os campos estão preenchidos
 		if( nomeCliente == null || cpf == null || cep == null || endereco == null || numero == null || complemento == null || bairro == null || cidade == null || estado == null || pais == null) { 
 			String mensagem = "Não foi possível editar o cliente: Preencha todos os campos obrigatórios.";
+			return mensagem;
+		}
+		
+		// Verifica se o CPF é válido
+		if(!isCPF(cpf.replaceAll("[^0-9]", ""))){
+			String mensagem = "Não foi possível editar o cliente: Digite um CPF válido.";
 			return mensagem;
 		}
 
