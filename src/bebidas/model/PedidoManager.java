@@ -23,8 +23,7 @@ public class PedidoManager {
 			return "Não foi possível criar pedido vazio";
 		}
 		
-		// Cria lista consolidando itens do pedido (soma qtd para itens com mesmo idVinho)
-		ArrayList<ItemPedido> itemPedidoList = new ArrayList<ItemPedido>();
+		// Verifica a quantidade de cada item do pedido
 		int qtProdutos = vinhos.length;
 		for(int i=0; i < qtProdutos; i++) {
 			int idVinho = Integer.parseInt(vinhos[i]);
@@ -32,36 +31,9 @@ public class PedidoManager {
 			if(qtdVinho < 1) {
 				return "Não foi possível criar item de pedido com quantidade menor que 1";
 			}
-			
-			ItemPedido itemPedido = new ItemPedido();
-			
 			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
-			itemPedido.setVinho(vinho);
-			itemPedido.setQtdVinho(qtdVinho);
-			
-			// verifica se já foi inserido algum item com o mesmo idVinho
-			boolean itemInserido = false;
-			for(int j=0; j < itemPedidoList.size(); j++) {
-				if(itemPedidoList.get(j).getVinho().getIdVinho() == idVinho) {
-					// soma qtdes
-					int qtdInicial = itemPedidoList.get(j).getQtdVinho();
-					int qtdNova = qtdInicial + qtdVinho;
-					// define nova quantidade no itemPedido já listado
-					itemPedidoList.get(j).setQtdVinho(qtdNova);
-					itemInserido = true;
-					break;
-				}
-			}
-			// caso não tenha sido inserido anteriormente, insere um novo itemPedido
-			if(!itemInserido) {
-				itemPedidoList.add(itemPedido);
-			}			
-		}
-		
-		
-		// Verifica a quantidade de cada item do pedido em relação ao estoque
-		for (ItemPedido itemPedido : itemPedidoList) {
-			if(itemPedido.getQtdVinho() > itemPedido.getVinho().getQtdEstoque()) {
+			int qtdEstoque = vinho.getQtdEstoque();
+			if(qtdVinho > qtdEstoque) {
 				return "Estoque insuficiente";
 			}
 		}
@@ -85,21 +57,21 @@ public class PedidoManager {
 			return mensagem;
 		}
 		
-		// Associa itens do pedido ao pedido e insere no BD
+		//Insere itens do pedido
 		double valorTotalPedido = 0.0;
-		for (ItemPedido itemPedido : itemPedidoList) {
-			Vinho vinho = itemPedido.getVinho();
+		for(int i=0; i < qtProdutos; i++) {
+			ItemPedido itemPedido = new ItemPedido();
+			int idVinho = Integer.parseInt(vinhos[i]);
+			int qtdVinho = Integer.parseInt(qtdVinhos[i]);
+			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
 			String nomeVinho = vinho.getNomeVinho();
 			double precoVinho = vinho.getPrecoVinho();
-			int qtdVinho = itemPedido.getQtdVinho();
 			double valorTotalItem = precoVinho * qtdVinho;
 			valorTotalPedido += valorTotalItem;
-			
-			// Atualiza os dados do itemPedido;
 			itemPedido.setPedido(pedido);
+			itemPedido.setQtdVinho(qtdVinho);
+			itemPedido.setVinho(vinho);
 			itemPedido.setValorTotalItem(valorTotalItem);
-			
-			// Insere o itemPedido no BD
 			try {
 				itemPedidoDAO.inserir(itemPedido);
 				mensagem = mensagem + " " + nomeVinho + " (" + qtdVinho + ").";
@@ -108,14 +80,11 @@ public class PedidoManager {
 				mensagem = "Não foi possível inserir item do pedido";				
 				return mensagem;
 			}
-			
 			// Retira qtde do estoque do vinho (reserva qtde para o pedido)
       		int qtdFinal = vinho.getQtdEstoque() - qtdVinho;
 	      	vinho.setQtdEstoque(qtdFinal);
-	      	vinhoDAO.atualizar(vinho);   
-			
+	      	vinhoDAO.atualizar(vinho);      		
 		}
-		
 		
 		// Atualiza o valor total do pedido
 		pedido.setValorTotal(valorTotalPedido);
