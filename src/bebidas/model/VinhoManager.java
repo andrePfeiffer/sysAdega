@@ -1,6 +1,9 @@
 package bebidas.model;
 import java.util.List;
 
+import bebidas.dao.ClienteDAO;
+import bebidas.dao.ItemPedidoDAO;
+import bebidas.dao.PedidoDAO;
 import bebidas.dao.VinhoDAO;
 
 public class VinhoManager {
@@ -75,10 +78,23 @@ public class VinhoManager {
 	}
 	
 	public static String apagarVinho( int idVinho ) {
-		VinhoDAO dao = new VinhoDAO();
-		
+		// Verifica se há itens de pedido associados a este vinho (se houver, não permite que o vinho seja apagado)
+		VinhoDAO vinhoDAO = new VinhoDAO();
+		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
+		Vinho vinho = new Vinho();
+		vinho = vinhoDAO.selecionarPorId(idVinho);
+		List<ItemPedido> listaItemPedido = itemPedidoDAO.selecionarPorVinho(vinho);
+		if(listaItemPedido != null) {
+			int qtdItensPedido = listaItemPedido.size();
+			if(qtdItensPedido > 0) {
+				String mensagem = "Não foi possível apagar o vinho pois há " + qtdItensPedido + " itens de pedido associados a ele: ";
+				return mensagem;
+			}
+		}
+				
+		// Apaga o vinho		
 		try {
-			dao.apagar(idVinho);
+			vinhoDAO.apagar(idVinho);
 			String mensagem = "Vinho apagado com sucesso: ";
 			return mensagem;
 		} catch( Exception e ) {
@@ -103,14 +119,23 @@ public class VinhoManager {
 
 
 	// Limpeza do BD
-
 	public static void limparBD() {
 		VinhoDAO vinhoDao = new VinhoDAO();
+		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
 		List<Vinho> vinhos = vinhoDao.selecionarTodos();
+		String mensagem = "";
 		for (Vinho vinho : vinhos) {
+			// Verifica se há itens de pedido associados a este vinho (se houver, não permite que o vinho seja apagado)
+			String nomeVinho = vinho.getNomeVinho();
+			List<ItemPedido> listaItemPedido = itemPedidoDAO.selecionarPorVinho(vinho);
+			if(listaItemPedido != null) {
+				int qtdItensPedido = listaItemPedido.size();
+				mensagem = mensagem + "Não foi possível apagar o vinho " + nomeVinho + " pois há " + qtdItensPedido + " itens de pedido associados a ele. ";
+				continue;
+			}
 			vinhoDao.apagar(vinho.getIdVinho());
 		}		
-		System.out.println("Vinhos apagados com sucesso!");
+		System.out.println(mensagem);
 	}
 	
 	public static void popularBD() {

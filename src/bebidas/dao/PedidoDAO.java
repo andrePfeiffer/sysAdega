@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
 
+import bebidas.model.Cliente;
 import bebidas.model.Pedido;
 
 public class PedidoDAO extends CommonsDAO {
@@ -92,6 +93,25 @@ public class PedidoDAO extends CommonsDAO {
 		EntityManager manager = factory.createEntityManager();
 		Query query = manager.createQuery("select p from Pedido p where p.estadoPedido = :estadoPedido");
 		query.setParameter("estadoPedido", estadoPedido);
+		if( query.getResultList() != null && !query.getResultList().isEmpty() ) {
+			List<?> resultadoObjList = (List<?>) query.getResultList();
+			List<Pedido> resultado = new ArrayList<Pedido>();
+			for (Object pedido : resultadoObjList) {
+				Pedido pedidoCast = setEstado(pedido);
+				resultado.add(pedidoCast);
+			}
+			manager.close();
+			return resultado;
+		} 
+		manager.close();
+		return null;
+	}
+	
+	public List<Pedido> selecionarPorCliente(Cliente cliente) {
+		EntityManagerFactory factory = HibernateUtil.getEntityManagerFactory();
+		EntityManager manager = factory.createEntityManager();
+		Query query = manager.createQuery("select p from Pedido p where p.cliente = :cliente");
+		query.setParameter("cliente", cliente);
 		if( query.getResultList() != null && !query.getResultList().isEmpty() ) {
 			List<?> resultadoObjList = (List<?>) query.getResultList();
 			List<Pedido> resultado = new ArrayList<Pedido>();

@@ -3,6 +3,7 @@ import java.util.InputMismatchException;
 import java.util.List;
 
 import bebidas.dao.ClienteDAO;
+import bebidas.dao.PedidoDAO;
 
 public class ClienteManager {
 	
@@ -152,10 +153,23 @@ public class ClienteManager {
 	}
 	
 	public static String apagarCliente( int idCliente ) {
-		ClienteDAO dao = new ClienteDAO();
+		// Verifica se há pedido associado a este cliente (se houver, não permite que o cliente seja apagado)
+		ClienteDAO clienteDAO = new ClienteDAO();
+		PedidoDAO pedidoDAO = new PedidoDAO();		
+		Cliente cliente = clienteDAO.selecionarPorId(idCliente);
+		String nomeCliente = cliente.getNomeCliente();
+		List<Pedido> listaPedido = pedidoDAO.selecionarPorCliente(cliente);
+		if(listaPedido != null) {
+			int qtdPedidos = listaPedido.size();
+			if(qtdPedidos > 0) {
+				String mensagem = "Não foi possível apagar o cliente " + nomeCliente + " pois há " + qtdPedidos + " pedido(s) associado(s) a ele.";
+				return mensagem;
+			}
+		}
 		
+		// Apaga o cliente
 		try {
-			dao.apagar(idCliente);
+			clienteDAO.apagar(idCliente);
 			String mensagem = "Cliente apagado com sucesso!";
 			return mensagem;
 		} catch( Exception e ) {

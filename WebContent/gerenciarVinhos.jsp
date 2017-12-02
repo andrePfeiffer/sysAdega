@@ -31,7 +31,11 @@
 	<div class="container">		
 		<!-- Botões -->	
 		<a href="cadastrarVinho.jsp" class="btn btn-success">Cadastrar Novo</a>
+		
+		<!-- Limpar Banco de Dados nao sera utilizado
 		<a href="confirmacao.jsp?operacao=limparBD" class="btn btn-success">Limpar Banco de Dados</a>
+		-->
+		
 		<br/>
 		
 		<div class="row">
