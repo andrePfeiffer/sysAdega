@@ -3,6 +3,4 @@
 .settings/org.eclipse.wst.common.project.facet.core.xml
 /build/classes
 /.metadata/
-.classpath
 src/META-INF/persistence.xml
-.classpath
