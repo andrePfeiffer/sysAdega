@@ -28,9 +28,11 @@ public class CriarPedidoServlet extends HttpServlet {
 		RequestDispatcher view = request.getRequestDispatcher("index.jsp");
 		
 		if( result.contains("Não foi possível")) {
-			//TODO: tratar erro - continuar:
-//			request.setAttribute("idVinho", idVinho);	
-//			view = request.getRequestDispatcher("index.jsp");
+			// Tratar erro na criação do pedido
+			request.setAttribute("vinhos", vinhos);	
+			request.setAttribute("qtdVinhos", qtdVinhos);
+			request.setAttribute("idCliente", idCliente);	
+			view = request.getRequestDispatcher("criarPedido.jsp");
 		}		
 		
 		view.forward(request, response);

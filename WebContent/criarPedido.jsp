@@ -14,7 +14,10 @@
 	<%@include file="_cabecalho.jsp"%>
 	
 	<%
-		// TODO: Caso tenha ocorrido erro na criação do pedido, recuperar os valores para que o formulário já venha preenchido
+		// Caso tenha ocorrido erro na criação do pedido, recuperar os valores para que o formulário já venha preenchido
+		String[] vinhosPrev = (String[])request.getAttribute("vinhos");	
+		String[] qtdVinhosPrev = (String[])request.getAttribute("qtdVinhos");
+		Integer idClientePrev = (Integer)request.getAttribute("idCliente");
 	
 		List<Vinho> vinhos = VinhoManager.consultarTodosVinhos();
 		List<Cliente> clientes = ClienteManager.consultarTodosClientes();
@@ -66,8 +69,15 @@
 								<% 
 								
 									for( Cliente cliente : clientes ) { 
-								
-										selectClientes += "<option value=" + cliente.getIdCliente() + " title='CPF: " + cliente.getCpf() + "'>" + cliente.getNomeCliente() + "</option>";								
+										
+										String selected = "";
+										
+										// Caso a página tenha dado erro anteriormente
+										if(idClientePrev != null && cliente.getIdCliente() == idClientePrev) {
+											selected = "selected";
+										}										
+										
+										selectClientes += "<option value=" + cliente.getIdCliente() + " title='CPF: " + cliente.getCpf() + "' " + selected + ">" + cliente.getNomeCliente() + "</option>";								
 								 
 									} 
 									

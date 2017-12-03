@@ -8,7 +8,6 @@ import bebidas.dao.ClienteDAO;
 import bebidas.dao.ItemPedidoDAO;
 import bebidas.dao.PedidoDAO;
 import bebidas.dao.VinhoDAO;
-import bebidas.state.State;
 
 public class PedidoManager {
 
@@ -17,6 +16,8 @@ public class PedidoManager {
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		ClienteDAO clienteDAO = new ClienteDAO();
 		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();		
+		
+		// IMPORTANTE: Todos as mensagens de erro devem conter "Não foi possível" para que o erro seja identificado pelo Servlet
 		
 		// Verifica se há ao menos um vinho no pedido
 		if(vinhos == null) {
@@ -73,7 +74,7 @@ public class PedidoManager {
 		// Verifica a quantidade de cada item do pedido em relação ao estoque
 		for (ItemPedido itemPedido : itemPedidoList) {
 			if(itemPedido.getQtdVinho() > itemPedido.getVinho().getQtdEstoque()) {
-				return "Estoque insuficiente";
+				return "Não foi possível criar o pedido. Estoque insuficiente";
 			}
 		}
 		
@@ -116,7 +117,7 @@ public class PedidoManager {
 				mensagem = mensagem + " " + nomeVinho + " (" + qtdVinho + ").";
 			} catch( Exception e ) {
 				e.printStackTrace();
-				mensagem = "Não foi possível inserir item do pedido";				
+				mensagem = "Não foi possível criar o pedido";				
 				return mensagem;
 			}
 			
@@ -136,7 +137,7 @@ public class PedidoManager {
 		
 	}
 	
-	// o Método encerrar foi transferido para dentro do State
+	// o Método encerrar é delegado à classe Pedido devido ao método State
 	public static String encerrarPedido(int idPedido) {
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		
@@ -157,6 +158,7 @@ public class PedidoManager {
 		return lista;
 	}
 	
+	// o Método preparar é delegado à classe Pedido devido ao método State
 	public static String prepararPedido(int idPedido) {
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		
@@ -165,6 +167,7 @@ public class PedidoManager {
 		return pedido.prepararPedido();
 	}
 	
+	// o Método cancelar é delegado à classe Pedido devido ao método State
 	public static String cancelarPedido(int idPedido) {
 		PedidoDAO pedidoDAO = new PedidoDAO();
 		
