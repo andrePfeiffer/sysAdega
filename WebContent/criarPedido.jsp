@@ -33,7 +33,7 @@
 				Vinho wine = VinhoManager.consultarVinhoPorId(Integer.parseInt(vinho));
 				String nomeVinho = wine.getNomeVinho();
 				double precoVinho = wine.getPrecoVinho();
-				int qtd = Integer.parseInt(qtdVinhosPrev[i]);
+				int qtd = Integer.parseInt(qtdVinhosPrev[i-1]);
 				
 			%>			
 						
