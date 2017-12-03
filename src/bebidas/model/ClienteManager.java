@@ -67,7 +67,7 @@ public class ClienteManager {
 		ClienteDAO dao = new ClienteDAO();
 				
 		// Verifica se todos os campos estão preenchidos
-		if( nomeCliente == null || cep == null || endereco == null || numero == null || complemento == null || bairro == null || cidade == null || estado == null || pais == null) { 
+		if( nomeCliente == null || cep.replaceAll("[^0-9]", "") == "" || endereco == null || numero == null || complemento == null || bairro == null || cidade == null || estado == null || pais == null) { 
 			String mensagem = "Não foi possível cadastrar o cliente: Preencha todos os campos obrigatórios.";
 			return mensagem;
 		}

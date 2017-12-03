@@ -147,13 +147,13 @@
                     <center>
 	                    <h4>Deseja realmente prosseguir?</h4>
 	                    <br>
-	                    <p>Esta ação não poderá ser desfeita, clique em cancelar para retornar ou em confirmar para prosseguir com a ação.</p>
+	                    <p>Esta ação não poderá ser desfeita, clique em <strong>Não</strong> para retornar ou em <strong>Sim</strong> para prosseguir com a ação.</p>
 	                </center>
                 </div>
                 <div class="modal-footer">
                     <div class="btn-group">
-                        <button class="btn btn-danger" data-dismiss="modal" id="cancelar"><span class="glyphicon glyphicon-remove"></span> Cancelar</button>
-                        <button class="btn btn-primary" id="confirmar"><span class="glyphicon glyphicon-check"></span> Confirmar</button>
+                        <button class="btn btn-danger" data-dismiss="modal" id="cancelar"><span class="glyphicon glyphicon-remove"></span> Não</button>
+                        <button class="btn btn-primary" id="confirmar"><span class="glyphicon glyphicon-check"></span> Sim</button>
                     </div>
                 </div>
  
