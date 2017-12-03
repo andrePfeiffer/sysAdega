@@ -7,18 +7,76 @@
 	<script type="text/javascript">								
 		var vinhoObj = [];
 		var vinhoObjAux = [];
+		var idVinho = 1;
 	</script>	
 	
 </head>
 <body>
 	<%@include file="_cabecalho.jsp"%>
-	
+	<script type="text/javascript">
 	<%
 		// Caso tenha ocorrido erro na criação do pedido, recuperar os valores para que o formulário já venha preenchido
 		String[] vinhosPrev = (String[])request.getAttribute("vinhos");	
 		String[] qtdVinhosPrev = (String[])request.getAttribute("qtdVinhos");
 		Integer idClientePrev = (Integer)request.getAttribute("idCliente");
 	
+		if(vinhosPrev != null){
+			
+			int i = 1;
+		
+			for( String vinho : vinhosPrev ) {	
+				
+				int idVinho = Integer.parseInt(vinho);
+				
+				if ( idVinho != 0){
+				
+				Vinho wine = VinhoManager.consultarVinhoPorId(Integer.parseInt(vinho));
+				String nomeVinho = wine.getNomeVinho();
+				double precoVinho = wine.getPrecoVinho();
+				int qtd = Integer.parseInt(qtdVinhosPrev[i]);
+				
+			%>			
+						
+				 console.log("<% out.print(nomeVinho); %>");
+				 console.log("<% out.print(precoVinho); %>");
+				 console.log("<% out.print(qtd); %>");
+				 
+				 $( document ).ready(function() {
+					 
+					vinhoObjAux.forEach(function(elem, i) {
+					    if (elem['id'] == <% out.print(vinho); %>) {
+					        vinhoObjAux.splice(i,1);
+					    }
+					});
+			 
+					  $("#vinhos").append("<div class='row' id='"+ <% out.print(i); %> +"'>"+							
+								"<div class='col-md-5'>"+	
+								"<br><select class='form-control' id='vinho" + idVinho + "' name='vinho' required>"+
+								"<option value='<% out.print(vinho); %>'><% out.print(nomeVinho); %></option>"+
+								"</select></div><div class='col-md-2'>"+		
+								"<br><input type='number' min='1' class='form-control' id='qtdVinho' value='" + <% out.print(qtd); %> + "' name='qtdVinho' required/>"+
+								"</div><div class='col-md-2'><label for='qtdVinho'></label>"+		
+								"<input type='hidden' id='idhidden' value='<% out.print(vinho); %>'/><input type='hidden' value='<% out.print(nomeVinho); %>' id='nomehidden'/>"+
+						  		"<input type='number' min='0' class='form-control' value='" + <% out.print(qtd*precoVinho); %> + "' id='precoVinho' name='precoVinho' readonly='readonly'/>"+
+								"</div><div class='col-md-2'>"+
+					  			"<span><i class='fa fa-plus fa-2x addWine' aria-hidden='true' onclick='addWineLine()'></i></span>&nbsp;&nbsp;&nbsp;"+
+					  			"<span><i class='fa fa-trash fa-2x removeWine' aria-hidden='true' onclick='removeWineLine("+<% out.print(i); %>+",this)'></i></span>&nbsp;"+
+								"</div></div>");
+					 });
+				 
+				 <%
+				}
+				
+				i++;
+				%>
+				idVinho++;
+				<%
+				}
+		}
+	%>
+	</script>
+	
+	<%
 		List<Vinho> vinhos = VinhoManager.consultarTodosVinhos();
 		List<Cliente> clientes = ClienteManager.consultarTodosClientes();
 		
@@ -90,7 +148,7 @@
 					<br>			
 					<div class="form-group">
 						<div id="vinhos">
-						<div class="row">							
+						<div class="row" id="0">							
 							<div class="col-md-5">
 				        		<label for="vinho">Vinho</label>		
 								<select class="form-control" id="vinho0" name="vinho" required>
@@ -168,7 +226,6 @@
 	%>
 	<script type="text/javascript">
 	
-	var idVinho = 1;
 	var valorTotalPedido = parseFloat(<% out.print(precoPrimeiroVinho); %>);
 	
 	
@@ -231,8 +288,6 @@
 			console.log($(this).find(':selected').attr('price'));
 			
 			option += "<option value=" +  $(this).find(':selected').val() + " price=" + $(this).find(':selected').attr('price') + " selected>" + $(this).find(':selected').html() + "</option>"; 
-			
-			// console.log("<option value=" +  $(this).find(':selected').val() + "price=" + $(this).find(':selected').attr('price') + " selected>" + $(this).find(':selected').html() + "</option>");
 			
 			$.each(vinhoObjAux, function() {
 					
