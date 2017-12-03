@@ -19,9 +19,11 @@
 		String[] vinhosPrev = (String[])request.getAttribute("vinhos");	
 		String[] qtdVinhosPrev = (String[])request.getAttribute("qtdVinhos");
 		Integer idClientePrev = (Integer)request.getAttribute("idCliente");
+		boolean hasvinhosPrev = false;
 	
 		if(vinhosPrev != null){
 			
+			hasvinhosPrev = true;
 			int i = 1;
 		
 			for( String vinho : vinhosPrev ) {	
@@ -35,11 +37,7 @@
 				double precoVinho = wine.getPrecoVinho();
 				int qtd = Integer.parseInt(qtdVinhosPrev[i-1]);
 				
-			%>			
-						
-				 console.log("<% out.print(nomeVinho); %>");
-				 console.log("<% out.print(precoVinho); %>");
-				 console.log("<% out.print(qtd); %>");
+			%>							
 				 
 				 $( document ).ready(function() {
 					 
@@ -52,7 +50,7 @@
 					  $("#vinhos").append("<div class='row' id='"+ <% out.print(i); %> +"'>"+							
 								"<div class='col-md-5'>"+	
 								"<br><select class='form-control' id='vinho" + idVinho + "' name='vinho' required>"+
-								"<option value='<% out.print(vinho); %>'><% out.print(nomeVinho); %></option>"+
+								"<option price='<% out.print(precoVinho); %>' value='<% out.print(vinho); %>'><% out.print(nomeVinho); %></option>"+
 								"</select></div><div class='col-md-2'>"+		
 								"<br><input type='number' min='1' class='form-control' id='qtdVinho' value='" + <% out.print(qtd); %> + "' name='qtdVinho' required/>"+
 								"</div><div class='col-md-2'><label for='qtdVinho'></label>"+		
@@ -72,6 +70,7 @@
 				idVinho++;
 				<%
 				}
+				
 		}
 	%>
 	</script>
@@ -182,7 +181,39 @@
 										    $("select[id^='vinho']").append(option);
 										
 										});
-
+									
+									<% if(hasvinhosPrev){ %>
+									
+									$( document ).ready(function() {
+									
+										$("#0").remove();
+										
+										  $("#vinhos").append("<div class='row' id='0'>"+							
+													"<div class='col-md-5'>"+	
+													"<br><select class='form-control' id='vinho0' name='vinho' required>"+
+													"<option value='0' >Selecione ...</option>"+
+													"</select></div><div class='col-md-2'>"+		
+													"<br><input type='number' min='1' class='form-control' id='qtdVinho' value='0' name='qtdVinho' required/>"+
+													"</div><div class='col-md-2'><label for='qtdVinho'></label>"+		
+													"<input type='hidden' id='idhidden'/><input type='hidden' id='nomehidden'/>"+
+											  		"<input type='number' min='0' class='form-control' id='precoVinho' name='precoVinho' readonly='readonly'/>"+
+													"</div><div class='col-md-2'>"+
+										  			"<span><i class='fa fa-plus fa-2x addWine' aria-hidden='true' onclick='addWineLine()'></i></span>&nbsp;&nbsp;&nbsp;"+
+										  			"<span><i class='fa fa-trash fa-2x removeWine' aria-hidden='true' onclick='removeWineLine(0,this)'></i></span>&nbsp;"+
+													"</div></div>");
+										  
+										  var valorTotalPedido = 0;
+										  
+										  $.each( $(".form-control"), function() {
+												if( $(this).attr('readonly')=="readonly" ){
+													valorTotalPedido += $(this).val() > 0 ? parseFloat($(this).val()) : 0;
+													}
+											});	
+										 $("#txtTotal").html(" Valor total do pedido: R$ " + parseFloat(valorTotalPedido).toFixed(2));
+										
+									});
+										
+									<% } %>
 									
 									</script>
 					  			</select>
@@ -278,14 +309,10 @@
 	
  	$(document).on('mouseenter', "select[id^='vinho']", function() {
  		
-		console.log($(this).parent().parent());
 		
 		if($(this).find(':selected').val() != '' ){
 			var option = "";
 			
-			console.log($(this).find(':selected').val());
-			console.log($(this).find(':selected').html());
-			console.log($(this).find(':selected').attr('price'));
 			
 			option += "<option value=" +  $(this).find(':selected').val() + " price=" + $(this).find(':selected').attr('price') + " selected>" + $(this).find(':selected').html() + "</option>"; 
 			
@@ -372,6 +399,10 @@
 	$(document).on('change', '#qtdVinho', function() {
 		
 		var precoVinho = $(this).parent().siblings().find("select[id^='vinho'] option:selected").attr("price");
+		
+		//console.log($(this).parent().parent().find("select[id^='vinho'] option:selected").attr('price'));
+		
+		console.log(precoVinho);
 		
 		if ($(this).val() < 1){
 			alert("A quantidade de vinhos precisa ser positiva. Alterando para 1 ...");
