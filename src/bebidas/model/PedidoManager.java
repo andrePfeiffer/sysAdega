@@ -27,15 +27,26 @@ public class PedidoManager {
 		ArrayList<ItemPedido> itemPedidoList = new ArrayList<ItemPedido>();
 		int qtProdutos = vinhos.length;
 		for(int i=0; i < qtProdutos; i++) {
+			if(vinhos[i].equals("0")) {
+				return "Não foi possível criar pedido com vinho não selecionado.";
+			}
+			
 			int idVinho = Integer.parseInt(vinhos[i]);
 			int qtdVinho = Integer.parseInt(qtdVinhos[i]);
 			if(qtdVinho < 1) {
-				return "Não foi possível criar item de pedido com quantidade menor que 1";
+				return "Não foi possível criar item de pedido com quantidade menor que 1.";
 			}
 			
 			ItemPedido itemPedido = new ItemPedido();
 			
-			Vinho vinho = vinhoDAO.selecionarPorId(idVinho);
+			Vinho vinho = new Vinho();
+			try {
+				vinho = vinhoDAO.selecionarPorId(idVinho);
+			} catch( Exception e ) {
+				e.printStackTrace();
+				return "Não foi possível criar o pedido. Vinho não encontrado.";
+			}
+			
 			itemPedido.setVinho(vinho);
 			itemPedido.setQtdVinho(qtdVinho);
 			
