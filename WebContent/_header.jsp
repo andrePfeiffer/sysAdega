@@ -11,6 +11,7 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="js/jquery.maskMoney.min.js" type="text/javascript"></script>
 <script src="js/jquery.maskedinput.min.js" type="text/javascript"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js" type="text/javascript"></script>
 
 <script>
 $(document).ready(function(){

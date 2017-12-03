@@ -31,6 +31,12 @@
 	    	</div>
 	    </div>
 	    
+	    <div class="panel panel-info">
+		    <div class="panel-heading"><strong>Geral</strong></div>
+	    	<div class="panel-body">
+	    		<a href="painelGerencial.jsp" data-toggle="popover" data-trigger="hover" data-content="Exibe principais indicadores do negócio.">Painel Gerencial <span class="badge badge-secondary">Novo</span></a>
+	    	</div>
+	    </div>
 	    
 	    
 	</div>

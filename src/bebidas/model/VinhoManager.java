@@ -116,6 +116,35 @@ public class VinhoManager {
 		Vinho vinho = dao.selecionarPorId(idVinho);
 		return vinho;
 	}
+	
+	public static int consultarQtdeVendidaVinho(Vinho vinho) {
+		ItemPedidoDAO itemPedidoDAO = new ItemPedidoDAO();
+		List<ItemPedido> listaItemPedido = itemPedidoDAO.selecionarPorVinho(vinho);
+		if(listaItemPedido == null) {
+			return 0;
+		} else {
+			int qtdeTotal = 0;
+			for (ItemPedido itemPedido : listaItemPedido) {
+				int qtdeItem = itemPedido.getQtdVinho();
+				// se o pedido for cancelado, não conta como vendido
+				if(itemPedido.getPedido().getEstadoPedido().equals("Cancelado")) {
+					qtdeItem = 0;
+				}
+				qtdeTotal = qtdeTotal + qtdeItem;
+			}
+			return qtdeTotal;
+		}
+	}
+	
+	public static int consultarQtdeTotalVinhosVendidos() {
+		List<Vinho> vinhos = VinhoManager.consultarTodosVinhos();
+		int qtdTotal = 0;
+		for (Vinho vinho : vinhos) {
+			int qtdVendidaVinho = VinhoManager.consultarQtdeVendidaVinho(vinho);
+			qtdTotal += qtdVendidaVinho;
+		}
+		return qtdTotal;
+	}
 
 
 	// Limpeza do BD
